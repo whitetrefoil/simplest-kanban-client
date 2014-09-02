@@ -5,6 +5,7 @@ module.exports = (grunt) ->
       dist: [ 'dist' ]
       server: [ '.server' ]
       building: [ '.building' ]
+      cache: [ '.sass-cache' ]
     bower:
       install:
         options:
@@ -56,7 +57,7 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: 'src'
-          src: [ '**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,slim}' ]
+          src: [ '**/*.js' ]
           filter: 'isFile'
           dest: '.building/'
         ]
@@ -69,13 +70,6 @@ module.exports = (grunt) ->
           dest: 'dist/'
           ext: '.html'
           extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: 'dist/'
-          ext: '.hbs'
-          extDot: 'last'
         ]
       server:
         options:
@@ -87,29 +81,6 @@ module.exports = (grunt) ->
           src: [ '**/*.jade' ]
           dest: '.server/'
           ext: '.html'
-          extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: '.server/'
-          ext: '.hbs'
-          extDot: 'last'
-        ]
-      building:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jade' ]
-          dest: '.building/'
-          ext: '.html'
-          extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: '.building/'
-          ext: '.hbs'
           extDot: 'last'
         ]
     compass:
@@ -124,12 +95,6 @@ module.exports = (grunt) ->
           sassDir: 'src/css'
           cssDir: '.server/css'
           outputStyle: 'expanded'
-      building:
-        options:
-          sassDir: 'src/css'
-          cssDir: '.building/css'
-          environment: 'production'
-          outputStyle: 'compressed'
     emblem:
       options:
         root: 'src/tpls/'
@@ -173,9 +138,9 @@ module.exports = (grunt) ->
       dependencies: [ 'bower:install' ]
       preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
       # preCompile: compile the files to optimize
-      preCompile: [ 'copy:bootstrap', 'copy:building', 'jade:building', 'compass:building', 'coffee:building', 'emblem:dist' ]  # TODO
+      preCompile: [ 'copy:building', 'coffee:building' ]  # TODO
       optimize: [ ]  # TODO
-      build: [ 'compile', 'copy:dist' ]  # TODO
+      build: [ 'compile', 'copy:dist', 'compass:dist', 'jade:dist', 'emblem:dist' ]  # TODO
       afterBuild: [ 'clean:building' ]  # TODO
 
 
@@ -190,11 +155,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-concurrent'
   grunt.loadNpmTasks 'grunt-emblem'
 
-  grunt.regiestTask 'compile', 'Compile & optimize the codes',
-      [ 'preCompile', 'optimize' ]  # TODO
+  grunt.registerTask 'compile', 'Compile & optimize the codes',
+      [ 'concurrent:preCompile', 'concurrent:optimize' ]  # TODO
 
   grunt.registerTask 'build', 'Build the code for production',
-      [ 'concurrent:clean', 'concurrent:dependencies', 'concurrent:build', 'concurrent:building', 'concurrent:afterBuild' ]
+      [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'concurrent:build', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'quickBuild', 'Quickly build the code w/o cleaning or bower tasks',
       [ 'concurrent:build', 'concurrent:building', 'concurrent:afterBuild' ]
