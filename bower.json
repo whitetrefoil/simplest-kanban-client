@@ -2,25 +2,23 @@
   "name":            "simplest-kanban-client",
   "version":         "0.1.0",
   "dependencies":    {
-    "jquery":                    "^2.1",
-    "requirejs":                 "^2.1",
-    "backbone":                  "^1.1",
-    "lodash-amd":                "^2.4.1",
-    "require-handlebars-plugin": "^0.8.1",
-    "bootstrap-sass-official":   "^3.2.0"
+    "jquery":                  "^2.1",
+    "backbone":                "^1.1",
+    "lodash":                  "^2.4.1",
+    "bootstrap-sass-official": "^3.2.0",
+    "emblem":                  "~0.3.18",
+    "handlebars":              "~2.0.0"
   },
   "exportsOverride": {
-    "lodash-amd":                {
-      "":           "main.js",
-      "modern":     "modern",
-      "underscore": "underscore"
+    "lodash":                  {
+      "": [ "dist/lodash.js", "dist/lodash.underscore.js" ]
     },
-    "require-handlebars-plugin": {
-      "":    "hbs.js",
-      "hbs": "hbs/*.js"
+    "handlebars":              {
+      "": "handlebars.runtime.js"
     },
-    "underscore":                {},
-    "bootstrap-sass-official":   {
+    "emblem":                  {},
+    "underscore":              {},
+    "bootstrap-sass-official": {
       "css":   "assets/stylesheets",
       "js":    "assets/javascripts",
       "fonts": "assets/fonts"
