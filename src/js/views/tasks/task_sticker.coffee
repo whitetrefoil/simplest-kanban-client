@@ -29,6 +29,8 @@ class TaskStickerView extends Backbone.View
     @boardView.taskPopupView.render(task).done (operation) =>
       if operation is 'deleted'
         @remove()
+      else if operation is 'moved'
+        @boardView.refresh()
       else
         @refresh()
 
