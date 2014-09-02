@@ -14,3 +14,5 @@ data/
 dist/
 bower_components/
 src/lib/
+src/fonts/bootstrap
+Gemfile.lock
