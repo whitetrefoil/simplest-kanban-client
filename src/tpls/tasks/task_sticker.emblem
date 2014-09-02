@@ -2,8 +2,8 @@
   a.task-sticker-move-left.glyphicon.glyphicon-chevron-left
   a.task-sticker-move-right.glyphicon.glyphicon-chevron-right
   .task-sticker-title
-    h5(title='{{name}}')
+    h5 title='{{name}}'
       a {{name}}
-  .task-sticker-content(title='{{assignee}}')
+  .task-sticker-content title='{{assignee}}'
     span.task-sticker-assignee-icon
     | {{assignee}}

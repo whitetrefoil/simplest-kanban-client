@@ -1,21 +1,14 @@
-define [
-  'routers/base'
-  'views/index'
-], (
-  BaseRouter
-  IndexPageView
-) ->
-  pageView = new IndexPageView()
+pageView = new IndexPageView()
 
-  class IndexRoute extends BaseRouter
+class IndexRouter extends BaseRouter
 
-    routes:
-      '': 'index'
+  routes:
+    '': 'index'
 
-    # routers
+  # routers
 
-    index: ->
-      pageView.render()
+  index: ->
+    pageView.render()
 
 
-  return IndexRoute
+window.IndexRouter = IndexRouter

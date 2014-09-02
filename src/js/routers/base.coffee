@@ -1,9 +1,3 @@
-define [
-  'backbone'
-], (
-  Backbone
-) ->
+class BaseRouter extends Backbone.Router
 
-  class BaseRouter extends Backbone.Router
-
-  return BaseRouter
+window.BaseRouter = BaseRouter
