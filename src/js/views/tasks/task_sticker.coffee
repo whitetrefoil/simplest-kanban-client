@@ -35,7 +35,7 @@ class TaskStickerView extends Backbone.View
   moveLeft: (task = @model) ->
     promise = task.moveLeft()
     if promise?
-      @$container = @$container.parent().previous().children('ul')
+      @$container = @$container.parent().prev().children('ul')
       @render()
 
   moveRight: (task = @model) ->
