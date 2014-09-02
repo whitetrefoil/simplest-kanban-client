@@ -57,10 +57,11 @@ class TaskPopupView extends Backbone.View
 
   saveTask: (taskAttributes, task = @model) ->
     task.set taskAttributes
+    isMoved = task.hasChanged('status')
     task.save null,
       wait: true
       success: =>
-        @deferred.resolve('saved')
+        @deferred.resolve if isMoved then 'moved' else 'saved'
         @remove()
 
   deleteTask: (task = @model) ->

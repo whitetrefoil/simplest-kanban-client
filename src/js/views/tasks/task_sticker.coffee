@@ -29,13 +29,15 @@ class TaskStickerView extends Backbone.View
     @boardView.taskPopupView.render(task).done (operation) =>
       if operation is 'deleted'
         @remove()
+      else if operation is 'moved'
+        @boardView.refresh()
       else
         @refresh()
 
   moveLeft: (task = @model) ->
     promise = task.moveLeft()
     if promise?
-      @$container = @$container.parent().previous().children('ul')
+      @$container = @$container.parent().prev().children('ul')
       @render()
 
   moveRight: (task = @model) ->

@@ -15,7 +15,7 @@ class Task extends BaseModel
 
   move: (step) ->
     newIndex = @statuses.indexOf(@get('status')) + step
-    if newIndex <= 0 or newIndex >= @statuses.length
+    if newIndex < 0 or newIndex >= @statuses.length
       promise = null
     else
       @set('status', @statuses[newIndex])
