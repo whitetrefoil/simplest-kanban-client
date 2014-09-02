@@ -1,9 +1,9 @@
 header#main-navbar
   .container
-    button.add-button(type='button')
+    button.add-button type='button'
       span.button-icon
       |  New Task
-    button.refresh-button(type='button')
+    button.refresh-button type='button'
       span.button-icon
       |  Refresh
 .container

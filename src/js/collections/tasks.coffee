@@ -1,20 +1,10 @@
-define [
-  'lodash'
-  'collections/base'
-  'models/task'
-], (
-  _
-  BaseCollection
-  Task
-) ->
+class Tasks extends BaseCollection
+  model: Task
 
-  class Tasks extends BaseCollection
-    model: Task
+  idAttribute: '_id'
 
-    idAttribute: '_id'
+  url: '/tasks'
 
-    url: '/tasks'
+  comparator: 'name'
 
-    comparator: 'name'
-
-  return Tasks
+window.Tasks = Tasks

@@ -4,7 +4,8 @@ module.exports = (grunt) ->
     clean:
       dist: [ 'dist' ]
       server: [ '.server' ]
-      rjs: [ '.tmp' ]
+      building: [ '.building', '.tmp' ]
+      cache: [ '.sass-cache' ]
     bower:
       install:
         options:
@@ -27,12 +28,12 @@ module.exports = (grunt) ->
           ext: '.js'
           extDot: 'last'
         ]
-      rjs:
+      building:
         files: [
           expand: true
           cwd: 'src'
           src: [ '**/*.+(coffee|litcoffee)' ]
-          dest: '.tmp/'
+          dest: '.building'
           ext: '.js'
           extDot: 'last'
         ]
@@ -47,75 +48,53 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: '.tmp'
-          src: [ '**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,haml,slim,js}' ]
+          cwd: 'src'
+          src: [ '**/*', '!lib/**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,slim,js}' ]
           filter: 'isFile'
           dest: 'dist/'
-        ,
+        ]
+      building:
+        files: [
           expand: true
           cwd: 'src'
-          src: [ 'lib/requirejs/*.js' ]
+          src: [ '**/*.js' ]
+          filter: 'isFile'
+          dest: '.building'
+        ]
+      usemin:
+        files: [
+          expand: true
+          cwd: '.building'
+          src: [ '**/*.html' ]
+          filter: 'isFile'
           dest: 'dist'
         ]
-      server:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,haml,slim}' ]
-          filter: 'isFile'
-          dest: '.server/'
-        ]
-      rjs:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,haml,slim}' ]
-          filter: 'isFile'
-          dest: '.tmp/'
-        ]
-    haml:
+    htmlmin:
+      options:
+        removeComments: true
+        removeCommentsFromCDATA: true
+        removeCDATASectionsFromCDATA: true
+        collapseWhitespace: true
+        conservativeCollapse: true
+        collapseBooleanAttributes: true
+        removeOptionalTags: true
       dist:
         files: [
           expand: true
-          cwd: 'src'
-          src: [ '**/*.haml' ]
-          dest: 'dist/'
-          ext: '.html'
-          extDot: 'last'
-        ]
-      server:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.haml' ]
-          dest: '.server/'
-          ext: '.html'
-          extDot: 'last'
-        ]
-      rjs:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.haml' ]
-          dest: '.tmp/'
-          ext: '.html'
-          extDot: 'last'
+          cwd: 'dist'
+          src: [ '**/*.html' ]
+          dest: 'dist'
         ]
     jade:
-      dist:
+      building:
+        options:
+          pretty: true
         files: [
           expand: true
           cwd: 'src'
           src: [ '**/*.jade' ]
-          dest: 'dist/'
+          dest: '.building'
           ext: '.html'
-          extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: 'dist/'
-          ext: '.hbs'
           extDot: 'last'
         ]
       server:
@@ -128,29 +107,6 @@ module.exports = (grunt) ->
           src: [ '**/*.jade' ]
           dest: '.server/'
           ext: '.html'
-          extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: '.server/'
-          ext: '.hbs'
-          extDot: 'last'
-        ]
-      rjs:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jade' ]
-          dest: '.tmp/'
-          ext: '.html'
-          extDot: 'last'
-        ,
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jadebars' ]
-          dest: '.tmp/'
-          ext: '.hbs'
           extDot: 'last'
         ]
     compass:
@@ -165,37 +121,32 @@ module.exports = (grunt) ->
           sassDir: 'src/css'
           cssDir: '.server/css'
           outputStyle: 'expanded'
-      rjs:
-        options:
-          sassDir: 'src/css'
-          cssDir: '.tmp/css'
-          environment: 'production'
-          outputStyle: 'compressed'
-    requirejs:
+    emblem:
       options:
-        optimize: 'none'
-        baseUrl: '.tmp/js'
-        paths:
-          lib: '../lib'
-          config: '../data/config'
-          data: 'utils/data'
-          hbs: '../lib/require-handlebars-plugin/hbs'
-          jquery: '../lib/jquery/jquery'
-          backbone: '../lib/backbone/backbone'
-          bootstrap: '../lib/bootstrap-sass-official/js/bootstrap'
-        shim:
-          bootstrap: [ 'jquery' ]
-        packages: [
-          name: 'lodash'
-          location: '../lib/lodash-amd/modern'
-        ,
-          name: 'underscore',
-          location: '../lib/lodash-amd/underscore'
-        ]
+        root: 'src/tpls/'
+        dependencies:
+          handlebars: 'bower_components/handlebars/handlebars.min.js'
+          emblem: 'bower_components/emblem/dist/emblem.min.js'
+      server:
+        files:
+          '.server/tpls/tpls.js': 'src/tpls/**/*.emblem'
+      building:
+        files:
+          '.building/tpls/tpls.js': 'src/tpls/**/*.emblem'
+    filerev:
       dist:
-        options:
-          name: 'index'
-          out: 'dist/js/index.js'
+        src: [
+          'dist/css/**/*.css'
+          'dist/fonts/**/*.*'
+          'dist/js/**/*.js'
+        ]
+    useminPrepare:
+      html: [ '.building/**/*.html' ]
+    usemin:
+      html: [ 'dist/**/*.html' ]
+      css: [ 'dist/css/**/*.css' ]
+      options:
+        assetsDirs: [ 'dist', 'dist/fonts', 'dist/img' ]
     connect:
       server:
         options:
@@ -210,46 +161,57 @@ module.exports = (grunt) ->
       bower:
         files: 'bower.json'
         tasks: 'concurrent:dependencies'
-      haml:
-        files: 'src/**/*.haml'
-        tasks: 'haml:server'
       jade:
-        files: 'src/**/*.+(jade|jadebars)'
+        files: 'src/**/*.jade'
         tasks: 'jade:server'
       compass:
         files: 'src/**/*.+(sass|scss)'
         tasks: 'compass:server'
       coffee:
-        files: './src/**/*.+(coffee|litcoffee)'
+        files: 'src/**/*.+(coffee|litcoffee)'
         tasks: 'coffee:server'
+      emblem:
+        files: 'src/tpls/**/*.emblem'
+        tasks: 'emblem:server'
     concurrent:
       clean: [ 'clean:dist', 'clean:server' ]
       dependencies: [ 'bower:install' ]
-      preServer: [ 'copy:bootstrap', 'copy:server', 'haml:server', 'jade:server', 'compass:server', 'coffee:server' ]
-      build: [ 'copy:bootstrap', 'copy:rjs', 'haml:rjs', 'jade:rjs', 'compass:rjs', 'coffee:rjs' ]
-      rjs: [ 'requirejs', 'copy:dist' ]
-      afterBuild: [ 'clean:rjs' ]
+      preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
+      # preCompile: compile the files to optimize
+      preCompile: [ 'copy:building', 'copy:dist',
+                    'coffee:building', 'compass:dist', 'jade:building', 'emblem:building' ]
+      optimize: [ 'optimize' ]
+      build: [ 'compile' ]
+      afterBuild: [ 'clean:building', 'clean:cache' ]
 
 
   grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-copy'
-  grunt.loadNpmTasks 'grunt-contrib-haml'
+  grunt.loadNpmTasks 'grunt-contrib-htmlmin'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-compass'
-  grunt.loadNpmTasks 'grunt-contrib-requirejs'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-concurrent'
+  grunt.loadNpmTasks 'grunt-emblem'
+  grunt.loadNpmTasks 'grunt-filerev'
+  grunt.loadNpmTasks 'grunt-usemin'
 
+  grunt.registerTask 'compile', 'Compile & optimize the codes',
+      [ 'concurrent:preCompile', 'concurrent:optimize' ]
+
+  grunt.registerTask 'optimize', 'Optimize JS files',
+      [ 'useminPrepare', 'copy:usemin', 'concat:generated', 'uglify:generated', 'filerev', 'usemin', 'htmlmin' ]
 
   grunt.registerTask 'build', 'Build the code for production',
-      [ 'concurrent:clean', 'concurrent:dependencies', 'concurrent:build', 'concurrent:rjs', 'concurrent:afterBuild' ]
+      [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'concurrent:build', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'quickBuild', 'Quickly build the code w/o cleaning or bower tasks',
-      [ 'clean:dist', 'concurrent:build', 'concurrent:rjs']
-      #[ 'concurrent:build', 'concurrent:rjs', 'concurrent:afterBuild']
+      [ 'concurrent:build', 'concurrent:building', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'server', 'Start a preview server',
       [ 'concurrent:clean', 'bower:copyOnly', 'concurrent:preServer', 'connect:server', 'watch' ]
