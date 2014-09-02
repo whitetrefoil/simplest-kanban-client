@@ -1,0 +1,22 @@
+header#main-navbar
+  .container
+    button.add-button(type='button')
+      span.button-icon
+      |  New Task
+    button.refresh-button(type='button')
+      span.button-icon
+      |  Refresh
+.container
+  #board.agile-board
+    #op-col.agile-board-col
+      h3 Open
+      ul
+    #ip-col.agile-board-col
+      h3 In Progress
+      ul
+    #sh-col.agile-board-col
+      h3 In SH Server
+      ul
+    #dev-col.agile-board-col
+      h3 In Dev Branch
+      ul

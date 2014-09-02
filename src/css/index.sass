@@ -1,0 +1,147 @@
+@import '../lib/bootstrap-sass-official/css/bootstrap'
+@import "compass/css3/transition"
+
+$columns: 12
+$statuses: 4
+$col-pre-status: $columns / $statuses
+
+#page
+  > .container
+    @extend .container-fluid
+
+#main-navbar
+  @extend .navbar
+  @extend .navbar-default
+  +clearfix
+  > .container
+    @extend .container-fluid
+    > button
+      margin-left: 10px
+    > button.add-button
+      @extend .btn
+      @extend .btn-primary
+      @extend .navbar-btn
+      @extend .navbar-right
+      > .button-icon
+        @extend .glyphicon
+        @extend .glyphicon-pencil
+    > button.refresh-button
+      @extend .btn
+      @extend .btn-info
+      @extend .navbar-btn
+      @extend .navbar-right
+      > .button-icon
+        @extend .glyphicon
+        @extend .glyphicon-refresh
+
+.agile-board
+  +make-row
+
+  .agile-board-col
+    +make-xs-column($col-pre-status)
+    > ul
+      list-style: none
+      margin: 0
+      padding: 0
+
+  .task-sticker
+    @extend .panel
+    position: relative
+    > .task-sticker-title
+      @extend .panel-heading
+      padding:
+        left: 30px
+        right: 30px
+      > h5
+        margin: 0
+        text-overflow: ellipsis
+        overflow: hidden
+        white-space: nowrap
+        > a
+          display: inline-block
+          color: inherit
+          cursor: pointer
+          width: 100%
+    > .task-sticker-content
+      @extend .panel-body
+      color: silver
+      font-size: 90%
+      padding:
+        left: 30px
+        right: 30px
+      text-overflow: ellipsis
+      overflow: hidden
+      white-space: nowrap
+      .task-sticker-assignee-icon
+        @extend .glyphicon
+        @extend .glyphicon-user
+        margin-right: 10px
+    > .task-sticker-move-left, .task-sticker-move-right
+      @extend .glyphicon
+      +single-transition(opacity, 0.2s)
+      position: absolute
+      width: 20px
+      height: 86px
+      line-height: 119px
+      text-align: center
+      top: 1px
+      opacity: 0.2
+      &:hover
+        cursor: pointer
+        text-decoration: none
+        opacity: 1
+    > .task-sticker-move-left
+      @extend .glyphicon-chevron-left
+      left: 0
+    > .task-sticker-move-right
+      @extend .glyphicon-chevron-right
+      right: 0
+
+#op-col
+  .task-sticker
+    @extend .panel-info
+    > .task-sticker-move-left
+      display: none
+#ip-col
+  .task-sticker
+    @extend .panel-success
+#sh-col
+  .task-sticker
+    @extend .panel-warning
+#dev-col
+  .task-sticker
+    @extend .panel-default
+    > .task-sticker-move-right
+      display: none
+
+.popup
+  @extend .modal
+  @extend .fade
+  .modal-title
+    h1
+      margin: 0
+      font-size: 120%
+  .popup-footer
+    @extend .modal-footer
+    .delete-button
+      @extend .btn
+      @extend .btn-danger
+      float: left
+    .save-button
+      @extend .btn
+      @extend .btn-primary
+    .cancel-button
+      @extend .btn
+      @extend .btn-default
+  .popup-delete-prompt
+    @extend .modal-footer
+    display: none
+    button
+      text-transform: uppercase
+    .delete-button
+      @extend .btn
+      @extend .btn-danger
+    .cancel-button
+      @extend .btn
+      @extend .btn-default
+      float: left
