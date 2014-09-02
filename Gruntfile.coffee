@@ -4,7 +4,7 @@ module.exports = (grunt) ->
     clean:
       dist: [ 'dist' ]
       server: [ '.server' ]
-      building: [ '.building' ]
+      building: [ '.building', '.tmp' ]
       cache: [ '.sass-cache' ]
     bower:
       install:
@@ -33,7 +33,7 @@ module.exports = (grunt) ->
           expand: true
           cwd: 'src'
           src: [ '**/*.+(coffee|litcoffee)' ]
-          dest: '.building/'
+          dest: '.building'
           ext: '.js'
           extDot: 'last'
         ]
@@ -48,8 +48,8 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: '.building'
-          src: [ '**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,slim,js}' ]
+          cwd: 'src'
+          src: [ '**/*', '!lib/**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,slim,js}' ]
           filter: 'isFile'
           dest: 'dist/'
         ]
@@ -59,15 +59,41 @@ module.exports = (grunt) ->
           cwd: 'src'
           src: [ '**/*.js' ]
           filter: 'isFile'
-          dest: '.building/'
+          dest: '.building'
+        ]
+      usemin:
+        files: [
+          expand: true
+          cwd: '.building'
+          src: [ '**/*.html' ]
+          filter: 'isFile'
+          dest: 'dist'
+        ]
+    htmlmin:
+      options:
+        removeComments: true
+        removeCommentsFromCDATA: true
+        removeCDATASectionsFromCDATA: true
+        collapseWhitespace: true
+        conservativeCollapse: true
+        collapseBooleanAttributes: true
+        removeOptionalTags: true
+      dist:
+        files: [
+          expand: true
+          cwd: 'dist'
+          src: [ '**/*.html' ]
+          dest: 'dist'
         ]
     jade:
-      dist:
+      building:
+        options:
+          pretty: true
         files: [
           expand: true
           cwd: 'src'
           src: [ '**/*.jade' ]
-          dest: 'dist/'
+          dest: '.building'
           ext: '.html'
           extDot: 'last'
         ]
@@ -103,10 +129,24 @@ module.exports = (grunt) ->
           emblem: 'bower_components/emblem/dist/emblem.min.js'
       server:
         files:
-          '.server/js/templates.js': 'src/tpls/**/*.emblem'
-      dist:
+          '.server/tpls/tpls.js': 'src/tpls/**/*.emblem'
+      building:
         files:
-          'dist/js/templates.js': 'src/tpls/**/*.emblem'
+          '.building/tpls/tpls.js': 'src/tpls/**/*.emblem'
+    filerev:
+      dist:
+        src: [
+          'dist/css/**/*.css'
+          'dist/fonts/**/*.*'
+          'dist/js/**/*.js'
+        ]
+    useminPrepare:
+      html: [ '.building/**/*.html' ]
+    usemin:
+      html: [ 'dist/**/*.html' ]
+      css: [ 'dist/css/**/*.css' ]
+      options:
+        assetsDirs: [ 'dist', 'dist/fonts', 'dist/img' ]
     connect:
       server:
         options:
@@ -138,25 +178,34 @@ module.exports = (grunt) ->
       dependencies: [ 'bower:install' ]
       preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
       # preCompile: compile the files to optimize
-      preCompile: [ 'copy:building', 'coffee:building' ]  # TODO
-      optimize: [ ]  # TODO
-      build: [ 'compile', 'copy:dist', 'compass:dist', 'jade:dist', 'emblem:dist' ]  # TODO
-      afterBuild: [ 'clean:building' ]  # TODO
+      preCompile: [ 'copy:building', 'copy:dist',
+                    'coffee:building', 'compass:dist', 'jade:building', 'emblem:building' ]
+      optimize: [ 'optimize' ]
+      build: [ 'compile' ]
+      afterBuild: [ 'clean:building', 'clean:cache' ]
 
 
   grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-htmlmin'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-compass'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-concurrent'
   grunt.loadNpmTasks 'grunt-emblem'
+  grunt.loadNpmTasks 'grunt-filerev'
+  grunt.loadNpmTasks 'grunt-usemin'
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
-      [ 'concurrent:preCompile', 'concurrent:optimize' ]  # TODO
+      [ 'concurrent:preCompile', 'concurrent:optimize' ]
+
+  grunt.registerTask 'optimize', 'Optimize JS files',
+      [ 'useminPrepare', 'copy:usemin', 'concat:generated', 'uglify:generated', 'filerev', 'usemin', 'htmlmin' ]
 
   grunt.registerTask 'build', 'Build the code for production',
       [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'concurrent:build', 'concurrent:afterBuild' ]
