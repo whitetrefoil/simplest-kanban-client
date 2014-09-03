@@ -37,6 +37,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author":          "WhiteTrefoil <whitetrefoil@gmail.com>",
+  "repository":      "https://github.com/whitetrefoil/simplest-kanban-client",
+  "homepage":        "https://github.com/whitetrefoil/simplest-kanban-client",
   "license":         "MIT",
   "dependencies":    {}
 }
