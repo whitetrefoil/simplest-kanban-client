@@ -1,1 +1,1 @@
-SK = window.SK = angular.module 'simplestKanban', []
+SK = window.SK = angular.module 'simplestKanban', ['ui.router']
