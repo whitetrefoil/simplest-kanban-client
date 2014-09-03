@@ -1,7 +1,7 @@
 template = Handlebars.templates['tasks/task_sticker']
 
 
-class TaskStickerView extends Backbone.View
+class SK.TaskStickerView extends Backbone.View
   tagName: 'li'
 
   events:
@@ -65,6 +65,3 @@ class TaskStickerView extends Backbone.View
     else
       options.container
     @boardView = options.boardView
-
-
-window.TaskStickerView = TaskStickerView

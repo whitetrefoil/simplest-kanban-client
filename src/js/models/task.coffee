@@ -1,4 +1,4 @@
-class Task extends BaseModel
+class SK.Task extends SK.BaseModel
   idAttribute: '_id'
 
   urlRoot: '/tasks'
@@ -27,6 +27,3 @@ class Task extends BaseModel
 
   moveRight: ->
     @move(1)
-
-
-window.Task = Task

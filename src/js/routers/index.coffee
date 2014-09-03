@@ -1,6 +1,8 @@
-pageView = new IndexPageView()
+SK.Data.tasks ||= new SK.Tasks()
 
-class IndexRouter extends BaseRouter
+pageView = new SK.IndexPageView()
+
+class SK.IndexRouter extends SK.BaseRouter
 
   routes:
     '': 'index'
@@ -9,6 +11,3 @@ class IndexRouter extends BaseRouter
 
   index: ->
     pageView.render()
-
-
-window.IndexRouter = IndexRouter

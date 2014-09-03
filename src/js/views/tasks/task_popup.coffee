@@ -1,7 +1,7 @@
 template = Handlebars.templates['tasks/task_popup']
 
 
-class TaskPopupView extends Backbone.View
+class SK.TaskPopupView extends Backbone.View
   id: 'taskPopup'
   tagName: 'div'
   className: 'popup'
@@ -50,9 +50,9 @@ class TaskPopupView extends Backbone.View
     @$('.popup-delete-prompt').toggle(toShow)
 
   createNewTask: ->
-    task = new Data.tasks.model()
+    task = new SK.Data.tasks.model()
     task.status = 'op'
-    Data.tasks.add(task)
+    SK.Data.tasks.add(task)
     task
 
   saveTask: (taskAttributes, task = @model) ->
@@ -91,7 +91,7 @@ class TaskPopupView extends Backbone.View
     if !task?
       @model = @createNewTask()
     else if _.isString(task)
-      @model = Data.tasks.get(task)
+      @model = SK.Data.tasks.get(task)
     else
       @model = task
     @$el.html(template(@compose(@model))).appendTo($('body')).modal
@@ -106,6 +106,3 @@ class TaskPopupView extends Backbone.View
     @off()
     $el.on('hidden.bs.modal', -> $el.remove()).modal 'hide'
     @deferred.reject() if @deferred.state() is 'pending'
-
-
-window.TaskPopupView = TaskPopupView

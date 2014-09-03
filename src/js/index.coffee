@@ -1,6 +1,3 @@
-window.Data =
-  tasks: new Tasks()
-
-new IndexRouter()
+new SK.IndexRouter()
 
 Backbone.history.start()
