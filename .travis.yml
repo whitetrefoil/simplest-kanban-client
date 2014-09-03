@@ -4,5 +4,6 @@ rvm:
 before_install:
   - gem install -N compass
   - npm install grunt-cli
+  - npm install
 script:
   - grunt build
