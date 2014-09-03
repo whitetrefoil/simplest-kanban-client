@@ -1,6 +1,6 @@
 {
   "name":            "simplest-kanban-client",
-  "version":         "0.1.2",
+  "version":         "0.2.0",
   "description":     "The web user interface of a very simple kanban application with only 1 feature and almost no error handling.",
   "keywords":        [
     "rest",
