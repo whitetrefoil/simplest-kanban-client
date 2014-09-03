@@ -1,4 +1,8 @@
 module.exports = (grunt) ->
+  require('load-grunt-tasks')(grunt)
+
+  require('time-grunt')(grunt)
+
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
     clean:
@@ -116,11 +120,19 @@ module.exports = (grunt) ->
           cssDir: 'dist/css'
           environment: 'production'
           outputStyle: 'compressed'
+          # TODO: bundle has problem on Windows by now.
+          #       waiting for the fix.
+          #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
+          #bundleExec: true
       server:
         options:
           sassDir: 'src/css'
           cssDir: '.server/css'
           outputStyle: 'expanded'
+          # TODO: bundle has problem on Windows by now.
+          #       waiting for the fix.
+          #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
+          #bundleExec: true
     emblem:
       options:
         root: 'src/tpls/'
@@ -185,22 +197,6 @@ module.exports = (grunt) ->
       afterBuild: [ 'clean:building', 'clean:cache' ]
 
 
-  grunt.loadNpmTasks 'grunt-bower-task'
-  grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-concat'
-  grunt.loadNpmTasks 'grunt-contrib-copy'
-  grunt.loadNpmTasks 'grunt-contrib-htmlmin'
-  grunt.loadNpmTasks 'grunt-contrib-jade'
-  grunt.loadNpmTasks 'grunt-contrib-compass'
-  grunt.loadNpmTasks 'grunt-contrib-connect'
-  grunt.loadNpmTasks 'grunt-contrib-uglify'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-concurrent'
-  grunt.loadNpmTasks 'grunt-emblem'
-  grunt.loadNpmTasks 'grunt-filerev'
-  grunt.loadNpmTasks 'grunt-usemin'
-
   grunt.registerTask 'compile', 'Compile & optimize the codes',
       [ 'concurrent:preCompile', 'concurrent:optimize' ]
 
@@ -215,3 +211,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'server', 'Start a preview server',
       [ 'concurrent:clean', 'bower:copyOnly', 'concurrent:preServer', 'connect:server', 'watch' ]
+
+  grunt.registerTask 'default', 'UT (when has) & build',
+      [ 'build' ]

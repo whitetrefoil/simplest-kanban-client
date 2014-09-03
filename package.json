@@ -31,7 +31,9 @@
     "grunt-contrib-watch":   "^0.6.1",
     "grunt-emblem":          "^0.1.0",
     "grunt-filerev":         "^0.2.1",
-    "grunt-usemin":          "^2.4.0"
+    "grunt-usemin":          "^2.4.0",
+    "load-grunt-tasks":      "^0.6.0",
+    "time-grunt":            "^1.0.0"
   },
   "scripts":         {
     "test": "echo \"Error: no test specified\" && exit 1"
