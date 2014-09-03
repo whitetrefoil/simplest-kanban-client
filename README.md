@@ -8,6 +8,10 @@ The REST client of a very simple kanban application with only 1 feature and almo
 Changelog
 -----
 
+### v0.2.0
+
+* Fix #7 - optimize application structure
+
 ### v0.1.2
 
 * Fix #1 - "cannot move left"
