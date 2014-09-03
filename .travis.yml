@@ -10,5 +10,6 @@ before_install:
   - npm -g up
   - npm -g ins grunt-cli
   - npm install
+  - bower install
 script:
   - grunt
