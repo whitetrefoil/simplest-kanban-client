@@ -115,7 +115,7 @@ module.exports = (grunt) ->
         bundleExec: true
       building:
         options:
-          style: 'expanded'
+          style: 'ugly'
         files: [
           expand: true
           cwd: 'src'
@@ -125,9 +125,6 @@ module.exports = (grunt) ->
           extDot: 'last'
         ]
       server:
-        options:
-          pretty: true
-          compileDebug: true
         files: [
           expand: true
           cwd: 'src'
