@@ -172,11 +172,8 @@ module.exports = (grunt) ->
   grunt.registerTask 'build', 'Build the code for production',
       [ 'concurrent:clean', 'copy:bootstrap', 'compile', 'concurrent:afterBuild' ]
 
-  grunt.registerTask 'quickBuild', 'Quickly build the code w/o cleaning or bower tasks',
-      [ 'compile', 'concurrent:afterBuild' ]
-
   grunt.registerTask 'server', 'Start a preview server',
-      [ 'concurrent:clean', 'bower:copyOnly', 'concurrent:preServer', 'connect:server', 'watch' ]
+      [ 'concurrent:clean', 'concurrent:preServer', 'connect:server', 'watch' ]
 
   grunt.registerTask 'default', 'UT (when has) & build',
       [ 'build' ]
