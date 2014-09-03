@@ -2,8 +2,10 @@ language: ruby
 rvm:
   - 2.1.1
 before_install:
-  - gem install -N compass
+  - gem up -N
+  - gem install -N bundler
+  - bundle update
   - npm install grunt-cli
   - npm install
 script:
-  - grunt build
+  - grunt
