@@ -1,3 +1,6 @@
+Simplest Kanban Client
+=====
+
 The REST client of a very simple kanban application with only 1 feature and almost no error handling.
 
 Changelog
