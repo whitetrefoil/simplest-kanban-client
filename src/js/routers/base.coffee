@@ -1,3 +1,1 @@
-class BaseRouter extends Backbone.Router
-
-window.BaseRouter = BaseRouter
+class SK.BaseRouter extends Backbone.Router

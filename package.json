@@ -1,6 +1,6 @@
 {
   "name":            "simplest-kanban-client",
-  "version":         "0.1.2",
+  "version":         "0.2.0",
   "description":     "The web user interface of a very simple kanban application with only 1 feature and almost no error handling.",
   "keywords":        [
     "rest",
@@ -31,12 +31,16 @@
     "grunt-contrib-watch":   "^0.6.1",
     "grunt-emblem":          "^0.1.0",
     "grunt-filerev":         "^0.2.1",
-    "grunt-usemin":          "^2.4.0"
+    "grunt-usemin":          "^2.4.0",
+    "load-grunt-tasks":      "^0.6.0",
+    "time-grunt":            "^1.0.0"
   },
   "scripts":         {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author":          "WhiteTrefoil <whitetrefoil@gmail.com>",
+  "repository":      "https://github.com/whitetrefoil/simplest-kanban-client",
+  "homepage":        "https://github.com/whitetrefoil/simplest-kanban-client",
   "license":         "MIT",
   "dependencies":    {}
 }

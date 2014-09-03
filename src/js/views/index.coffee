@@ -1,6 +1,6 @@
 template = Handlebars.templates.index
 
-class IndexPageView extends Backbone.View
+class SK.IndexPageView extends Backbone.View
   el: '#page'
 
   events:
@@ -29,7 +29,7 @@ class IndexPageView extends Backbone.View
       sh: []
       dev: []
 
-    Data.tasks.forEach (task) ->
+    SK.Data.tasks.forEach (task) ->
       column = (tasks[task.get('status')] ||= [])
       column.push(task)
 
@@ -37,7 +37,7 @@ class IndexPageView extends Backbone.View
 
 
   refresh: ->
-    $.when(Data.tasks.fetch()).done =>
+    $.when(SK.Data.tasks.fetch()).done =>
       @renderData()
 
   renderData: ->
@@ -47,7 +47,7 @@ class IndexPageView extends Backbone.View
     _.forEach statuses, (status, statusCode) =>
       $container = $("##{statusCode}-col > ul")
       _.forEach status, (task) =>
-        @taskViews.push new TaskStickerView({
+        @taskViews.push new SK.TaskStickerView({
           model: task
           container: $container
           boardView: this
@@ -56,11 +56,8 @@ class IndexPageView extends Backbone.View
 
   renderStatic: ->
     @$el.html template()
-    @taskPopupView ||= new TaskPopupView()
+    @taskPopupView ||= new SK.TaskPopupView()
 
   render: ->
     @renderStatic()
     @refresh()
-
-
-window.IndexPageView = IndexPageView

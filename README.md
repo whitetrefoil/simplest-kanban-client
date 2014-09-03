@@ -1,7 +1,16 @@
+Simplest Kanban Client
+=====
+
+Dev branch status: [![Build Status](https://travis-ci.org/whitetrefoil/simplest-kanban-client.svg?branch=dev)](https://travis-ci.org/whitetrefoil/simplest-kanban-client)
+
 The REST client of a very simple kanban application with only 1 feature and almost no error handling.
 
 Changelog
 -----
+
+### v0.2.0
+
+* Fix #7 - optimize application structure
 
 ### v0.1.2
 

@@ -1,11 +1,10 @@
 module.exports = (grunt) ->
+  require('load-grunt-tasks')(grunt)
+
+  require('time-grunt')(grunt)
+
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
-    clean:
-      dist: [ 'dist' ]
-      server: [ '.server' ]
-      building: [ '.building', '.tmp' ]
-      cache: [ '.sass-cache' ]
     bower:
       install:
         options:
@@ -18,6 +17,19 @@ module.exports = (grunt) ->
           cleanTargetDir: true
           layout: 'byComponent'
           install: false
+    concurrent:
+      clean: [ 'clean:dist', 'clean:server' ]
+      dependencies: [ 'bower:install' ]
+      preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
+      # preCompile: compile the files to optimize
+      preCompile: [ 'copy:building', 'copy:dist',
+                    'coffee:building', 'compass:dist', 'jade:building', 'emblem:building' ]
+      afterBuild: [ 'clean:building', 'clean:cache' ]
+    clean:
+      dist: [ 'dist' ]
+      server: [ '.server' ]
+      building: [ '.building', '.tmp' ]
+      cache: [ '.sass-cache' ]
     coffee:
       server:
         files: [
@@ -37,6 +49,32 @@ module.exports = (grunt) ->
           ext: '.js'
           extDot: 'last'
         ]
+    compass:
+      dist:
+        options:
+          sassDir: 'src/css'
+          cssDir: 'dist/css'
+          environment: 'production'
+          outputStyle: 'compressed'
+          # TODO: bundle has problem on Windows by now.
+          #       waiting for the fix.
+          #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
+          #bundleExec: true
+      server:
+        options:
+          sassDir: 'src/css'
+          cssDir: '.server/css'
+          outputStyle: 'expanded'
+          # TODO: bundle has problem on Windows by now.
+          #       waiting for the fix.
+          #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
+          #bundleExec: true
+    connect:
+      server:
+        options:
+          base: [ '.server', 'src' ]
+          livereload: true
+          useAvailablePort: true
     copy:
       bootstrap:
         files: [
@@ -109,18 +147,26 @@ module.exports = (grunt) ->
           ext: '.html'
           extDot: 'last'
         ]
-    compass:
-      dist:
-        options:
-          sassDir: 'src/css'
-          cssDir: 'dist/css'
-          environment: 'production'
-          outputStyle: 'compressed'
-      server:
-        options:
-          sassDir: 'src/css'
-          cssDir: '.server/css'
-          outputStyle: 'expanded'
+    watch:
+      options:
+        spawn: false
+        forever: true
+        livereload: true
+      bower:
+        files: 'bower.json'
+        tasks: 'concurrent:dependencies'
+      jade:
+        files: 'src/**/*.jade'
+        tasks: 'jade:server'
+      compass:
+        files: 'src/**/*.+(sass|scss)'
+        tasks: 'compass:server'
+      coffee:
+        files: 'src/**/*.+(coffee|litcoffee)'
+        tasks: 'coffee:server'
+      emblem:
+        files: 'src/tpls/**/*.emblem'
+        tasks: 'emblem:server'
     emblem:
       options:
         root: 'src/tpls/'
@@ -147,71 +193,22 @@ module.exports = (grunt) ->
       css: [ 'dist/css/**/*.css' ]
       options:
         assetsDirs: [ 'dist', 'dist/fonts', 'dist/img' ]
-    connect:
-      server:
-        options:
-          base: [ '.server', 'src' ]
-          livereload: true
-          useAvailablePort: true
-    watch:
-      options:
-        spawn: false
-        forever: true
-        livereload: true
-      bower:
-        files: 'bower.json'
-        tasks: 'concurrent:dependencies'
-      jade:
-        files: 'src/**/*.jade'
-        tasks: 'jade:server'
-      compass:
-        files: 'src/**/*.+(sass|scss)'
-        tasks: 'compass:server'
-      coffee:
-        files: 'src/**/*.+(coffee|litcoffee)'
-        tasks: 'coffee:server'
-      emblem:
-        files: 'src/tpls/**/*.emblem'
-        tasks: 'emblem:server'
-    concurrent:
-      clean: [ 'clean:dist', 'clean:server' ]
-      dependencies: [ 'bower:install' ]
-      preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
-      # preCompile: compile the files to optimize
-      preCompile: [ 'copy:building', 'copy:dist',
-                    'coffee:building', 'compass:dist', 'jade:building', 'emblem:building' ]
-      optimize: [ 'optimize' ]
-      build: [ 'compile' ]
-      afterBuild: [ 'clean:building', 'clean:cache' ]
 
-
-  grunt.loadNpmTasks 'grunt-bower-task'
-  grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-concat'
-  grunt.loadNpmTasks 'grunt-contrib-copy'
-  grunt.loadNpmTasks 'grunt-contrib-htmlmin'
-  grunt.loadNpmTasks 'grunt-contrib-jade'
-  grunt.loadNpmTasks 'grunt-contrib-compass'
-  grunt.loadNpmTasks 'grunt-contrib-connect'
-  grunt.loadNpmTasks 'grunt-contrib-uglify'
-  grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-concurrent'
-  grunt.loadNpmTasks 'grunt-emblem'
-  grunt.loadNpmTasks 'grunt-filerev'
-  grunt.loadNpmTasks 'grunt-usemin'
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
-      [ 'concurrent:preCompile', 'concurrent:optimize' ]
+      [ 'concurrent:preCompile', 'optimize' ]
 
   grunt.registerTask 'optimize', 'Optimize JS files',
       [ 'useminPrepare', 'copy:usemin', 'concat:generated', 'uglify:generated', 'filerev', 'usemin', 'htmlmin' ]
 
   grunt.registerTask 'build', 'Build the code for production',
-      [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'concurrent:build', 'concurrent:afterBuild' ]
+      [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'compile', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'quickBuild', 'Quickly build the code w/o cleaning or bower tasks',
-      [ 'concurrent:build', 'concurrent:building', 'concurrent:afterBuild' ]
+      [ 'compile', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'server', 'Start a preview server',
       [ 'concurrent:clean', 'bower:copyOnly', 'concurrent:preServer', 'connect:server', 'watch' ]
+
+  grunt.registerTask 'default', 'UT (when has) & build',
+      [ 'build' ]

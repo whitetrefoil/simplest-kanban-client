@@ -1,4 +1,4 @@
-class BaseCollection extends Backbone.Collection
+class SK.BaseCollection extends Backbone.Collection
   fetch: ->
     if @promise? and @promise.state() is 'pending'
       @promise
@@ -11,7 +11,4 @@ class BaseCollection extends Backbone.Collection
       if _.contains @_url, '://'
         @_url
       else
-        Config.host + _.result @, '_url'
-
-
-window.BaseCollection = BaseCollection
+        SK.Config.host + _.result @, '_url'
