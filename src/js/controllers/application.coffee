@@ -1,4 +1,4 @@
-SK.controller 'RootCtrl', [
+SK.controller 'AppCtrl', [
   '$scope'
   '$state'
   (
