@@ -57,11 +57,29 @@ module.exports = (grunt) ->
           #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
           #bundleExec: true
     connect:
+      options:
+        port: 8000
+        base: ['.server', 'src']
+        open: 'http://localhost:8000'
+        middleware: (connect, options) ->
+          options.base = [options.base] unless Array.isArray(options.base)
+          middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest]
+          options.base.forEach (base) ->
+            middlewares.push(connect.static(base))
+          directory = options.directory or options.base[options.base.length - 1]
+          middlewares.push(connect.directory(directory))
+          middlewares.push (req, res, next) ->
+            console.log req.url
+            next()
+          middlewares
       server:
+        proxies: [
+          context:      '/api'
+          host:         'localhost'
+          port:         9999
+        ]
         options:
-          base: [ '.server', 'src' ]
           livereload: true
-          useAvailablePort: true
     copy:
       bootstrap:
         files: [
@@ -173,7 +191,7 @@ module.exports = (grunt) ->
       [ 'concurrent:clean', 'copy:bootstrap', 'compile', 'concurrent:afterBuild' ]
 
   grunt.registerTask 'server', 'Start a preview server',
-      [ 'concurrent:clean', 'concurrent:preServer', 'connect:server', 'watch' ]
+      [ 'concurrent:clean', 'concurrent:preServer', 'configureProxies:server', 'connect:server', 'watch' ]
 
   grunt.registerTask 'default', 'UT (when has) & build',
       [ 'build' ]
