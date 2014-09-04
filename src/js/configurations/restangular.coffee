@@ -7,11 +7,11 @@ SK.config [
     RestangularProvider.setRestangularFields
       id: '_id'
       selfLink: '_links.self.href'
-      etag: 'restangularEtag'
+      etag: '_etag'
 
     RestangularProvider.addResponseInterceptor (data, operation) ->
       setEtag = (elem) ->
-        elem.restangularEtag = elem._etag
+        #elem.restangularEtag = elem._etag
         elem
       switch operation
         when 'getList'
