@@ -1,5 +1,10 @@
+'use strict'
+
 SK.controller 'BoardCtrl', [
   '$scope'
-  ($scope) ->
-
+  'tasks'
+  '$window'
+  ($scope, tasks, $window) ->
+    $scope.tasks = tasks
+    $window.tasks = tasks
 ]

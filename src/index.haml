@@ -18,11 +18,14 @@
 
     / build:js js/app.min.js
     %script{src: 'js/application.js'}
-    %script{src: 'js/router.js'}
+    %script{src: 'js/configurations/restangular.js'}
     %script{src: 'js/services/tasks.js'}
+    %script{src: 'js/services/assignees.js'}
     %script{src: 'js/controllers/application.js'}
     %script{src: 'js/controllers/board.js'}
+    %script{src: 'js/controllers/assignees.js'}
     %script{src: 'js/controllers/help.js'}
+    %script{src: 'js/router.js'}
     / endbuild
 
   %body

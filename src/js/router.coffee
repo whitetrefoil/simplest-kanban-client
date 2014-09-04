@@ -1,8 +1,9 @@
+'use strict'
+
 SK.config [
   '$stateProvider'
   '$urlRouterProvider'
   ($stateProvider, $urlRouterProvider) ->
-
 
     $urlRouterProvider.otherwise '/'
 
@@ -16,9 +17,14 @@ SK.config [
       url: ''
       controller: 'BoardCtrl'
       templateUrl: 'tpls/board.html'
+      resolve:
+        tasks: ['TasksService', (TasksService) -> TasksService.getList()]
     .state 'app.assignees',
       url: 'assignees'
+      controller: 'AssigneesCtrl'
       template: 'assignees - TBD'
+      resolve:
+        assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
     .state 'app.milestones',
       url: 'milestones'
       template: 'milestones - TBD'

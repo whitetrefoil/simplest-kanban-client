@@ -1,3 +1,5 @@
+'use strict'
+
 SK.controller 'AppCtrl', [
   '$scope'
   '$state'
