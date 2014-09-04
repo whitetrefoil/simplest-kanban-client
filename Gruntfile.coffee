@@ -7,10 +7,10 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON('package.json')
     concurrent:
       clean: [ 'clean:dist', 'clean:server' ]
-      preServer: [ 'copy:bootstrap', 'haml:server', 'compass:server', 'coffee:server' ]
+      preServer: [ 'copy:bootstrap', 'compass:server', 'coffee:server' ]
       # preCompile: compile the files to optimize
       preCompile: [ 'copy:building', 'copy:dist',
-                    'coffee:building', 'compass:dist', 'haml:building' ]
+                    'coffee:building', 'compass:dist' ]
       afterBuild: [ 'clean:building', 'clean:cache' ]
     clean:
       dist: [ 'dist' ]
@@ -92,7 +92,7 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: 'src'
-          src: [ '**/*', '!lib/**/*', '!**/*.{coffee,litcoffee,sass,scss,haml,slim,js}' ]
+          src: [ '**/*', '!lib/**/*', '!**/*.{coffee,litcoffee,sass,scss,js}' ]
           filter: 'isFile'
           dest: 'dist/'
         ]
@@ -128,43 +128,21 @@ module.exports = (grunt) ->
           src: [ '**/*.html' ]
           dest: 'dist'
         ]
-    haml:
-      options:
-        bundleExec: true
-      building:
-        options:
-          style: 'ugly'
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.haml' ]
-          dest: '.building'
-          ext: '.html'
-          extDot: 'last'
-        ]
-      server:
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.haml' ]
-          dest: '.server/'
-          ext: '.html'
-          extDot: 'last'
-        ]
     watch:
       options:
         spawn: false
         forever: true
         livereload: true
-      haml:
-        files: 'src/**/*.haml'
-        tasks: 'haml:server'
       compass:
         files: 'src/**/*.+(sass|scss)'
         tasks: 'compass:server'
       coffee:
         files: 'src/**/*.+(coffee|litcoffee)'
         tasks: 'coffee:server'
+      html:
+        files: 'src/**/*.html'
+      css:
+        files: 'src/**/*.css'
     filerev:
       dist:
         src: [

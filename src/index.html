@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang='zh-CN' ng-app='simplestKanban'>
+  <head>
+    <meta charset='utf-8'>
+    <link href='css/app.css' rel='stylesheet'>
+    <title>Simplest Kanban</title>
+
+    <!-- build:js js/libs.min.js -->
+    <script src='lib/jquery/dist/jquery.js'></script>
+    <script src='lib/lodash/dist/lodash.js'></script>
+    <script src='lib/bootstrap-sass-official/assets/javascripts/bootstrap.js'></script>
+    <script src='lib/angular/angular.js'></script>
+    <script src='lib/angular-bootstrap/ui-bootstrap.js'></script>
+    <script src='lib/angular-bootstrap/ui-bootstrap-tpls.js'></script>
+    <script src='lib/angular-ui-router/release/angular-ui-router.js'></script>
+    <script src='lib/restangular/dist/restangular.js'></script>
+    <!-- endbuild -->
+
+    <!-- build:js js/app.min.js -->
+    <script src='js/application.js'></script>
+    <script src='js/configurations/restangular.js'></script>
+    <script src='js/services/tasks.js'></script>
+    <script src='js/services/assignees.js'></script>
+    <script src='js/services/labels.js'></script>
+    <script src='js/services/milestones.js'></script>
+    <script src='js/services/statuses.js'></script>
+    <script src='js/controllers/application.js'></script>
+    <script src='js/controllers/board.js'></script>
+    <script src='js/controllers/assignees.js'></script>
+    <script src='js/controllers/help.js'></script>
+    <script src='js/router.js'></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <div id='page' ui-view></div>
+  </body>
+</html>
