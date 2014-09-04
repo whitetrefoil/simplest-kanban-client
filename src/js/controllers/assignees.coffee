@@ -3,8 +3,10 @@
 SK.controller 'AssigneesCtrl', [
   '$scope'
   'assignees'
-  '$window'
-  ($scope, assignees, $window) ->
+  ($scope, assignees) ->
     $scope.assignees = assignees
-    $window.assignees = assignees
+    $scope.save = (assignee) ->
+      assignee.push()
+      .then (args...) -> console.log 'success:', args
+      .catch (args...) -> console.log 'fail:', args
 ]

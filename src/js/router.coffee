@@ -22,7 +22,7 @@ SK.config [
     .state 'app.assignees',
       url: 'assignees'
       controller: 'AssigneesCtrl'
-      template: 'assignees - TBD'
+      templateUrl: 'tpls/assignees.html'
       resolve:
         assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
     .state 'app.milestones',
