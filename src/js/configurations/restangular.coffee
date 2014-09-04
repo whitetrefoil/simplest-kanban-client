@@ -10,17 +10,14 @@ SK.config [
       etag: '_etag'
 
     RestangularProvider.addResponseInterceptor (data, operation) ->
-      setEtag = (elem) ->
-        #elem.restangularEtag = elem._etag
-        elem
       switch operation
         when 'getList'
-          dataBody = data._items.map setEtag
+          dataBody = data._items
           metaData = _.pick data, (val, key) ->
             key.startsWith('_') and key isnt '_items'
           _.assign dataBody, metaData
         else
-          dataBody = setEtag(data)
+          dataBody = data
       dataBody
 
     RestangularProvider.addRequestInterceptor (elem) ->
