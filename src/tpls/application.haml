@@ -1,2 +1,9 @@
-%h1 {{title}}
-%div{ui:{view: true}}
+%header#main-navbar
+  .container
+    %button.add-button{type: 'button'}
+      %span.button-icon
+      New Task
+    %button.refresh-button{type: 'button'}
+      %span.button-icon
+      Refresh
+.container{ui:{view: true}}

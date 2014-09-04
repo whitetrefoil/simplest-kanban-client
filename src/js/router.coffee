@@ -14,7 +14,8 @@ SK.config [
       abstract: true
     .state 'app.board',
       url: ''
-      template: 'board - TBD'
+      controller: 'BoardCtrl'
+      templateUrl: 'tpls/board.html'
     .state 'app.assignees',
       url: 'assignees'
       template: 'assignees - TBD'
