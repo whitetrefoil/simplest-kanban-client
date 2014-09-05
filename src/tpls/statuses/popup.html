@@ -24,11 +24,35 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="statusColor">Css Class</label>
+      <label class="control-label">Style</label>
       <div class="form-input">
+<!--
         <input id="statusColor" type="text"
                class="form-control"
                ng-model="model.cssClass"/>
+-->
+        <div class="btn-group">
+          <label class="btn btn-default"
+                 ng-model="model.cssClass"
+                 btn-radio="'default'">Default</label>
+          <label class="btn btn-info"
+                 ng-model="model.cssClass"
+                 btn-radio="'info'">Info</label>
+          <label class="btn btn-primary"
+                 ng-model="model.cssClass"
+                 btn-radio="'primary'">Primary</label>
+        </div>
+        <div class="btn-group">
+          <label class="btn btn-success"
+                 ng-model="model.cssClass"
+                 btn-radio="'success'">Success</label>
+          <label class="btn btn-warning"
+                 ng-model="model.cssClass"
+                 btn-radio="'warning'">Warning</label>
+          <label class="btn btn-danger"
+                 ng-model="model.cssClass"
+                 btn-radio="'danger'">Danger</label>
+        </div>
       </div>
     </div>
   </form>

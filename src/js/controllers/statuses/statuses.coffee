@@ -11,7 +11,9 @@ StatusPopupCtrl = [
     $scope.title = title
 
     if $scope.isNew is true
-      $scope.model = {}
+      $scope.model = {
+        cssClass: 'default'
+      }
     else
       $scope.model = status
 
