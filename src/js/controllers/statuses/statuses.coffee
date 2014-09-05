@@ -1,22 +1,36 @@
 'use strict'
 
 StatusPopupCtrl = [
-  '$scope', '$modalInstance', 'isNew', 'title', 'statuses'
-  ($scope, $modalInstance, isNew, title, statuses) ->
-    $scope.isNew = isNew
+  '$scope', '$modalInstance', 'title', 'status', 'statuses'
+  ($scope, $modalInstance, title, status, statuses) ->
+    $scope.isConfirmingDeleting = false
+    $scope.cancelDeleting = -> $scope.isConfirmingDeleting = false
+    $scope.confirmDeleting = -> $scope.isConfirmingDeleting = true
+
+    $scope.isNew = !status?
     $scope.title = title
-    window.statuses = statuses
-    if isNew is true
+
+    if $scope.isNew is true
       $scope.model = {}
+    else
+      $scope.model = status
+
     $scope.cancel = -> $modalInstance.dismiss 'cancel'
     $scope.save = ->
       $scope.saveStatus = 'saving'
       statuses.post $scope.model
       .then (result) ->
-        statuses.push result
         $modalInstance.close(result)
-      .catch (reason) ->
+      .catch ->
         $scope.saveStatus = 'failed'
+
+    $scope.delete = ->
+      $scope.deleteStatus = 'saving'
+      status.remove()
+      .then ->
+        $modalInstance.close()
+      .catch ->
+        $scope.deleteStatus = 'failed'
 ]
 
 
@@ -24,10 +38,10 @@ angular
 .module 'simplestKanban'
 .controller 'StatusesCtrl', [
   '$scope'
-  'StatusesService'
+  'statuses'
   '$modal'
-  ($scope, StatusesService, $modal) ->
-    $scope.statuses = StatusesService.getList().$object
+  ($scope, statuses, $modal) ->
+    $scope.statuses = statuses
     $scope.toolbar.createNew = ->
       $modal.open
         windowClass: 'popup'
@@ -35,7 +49,25 @@ angular
         controller: StatusPopupCtrl
         templateUrl: 'tpls/statuses/popup.html'
         resolve:
-          isNew: -> true
+          status: -> null
           title: -> 'New Status'
-          statuses: -> $scope.statuses
+          statuses: -> statuses
+      .result.then (newStatus) ->
+        statuses.push newStatus
+
+    $scope.editStatus = (status) ->
+      $modal.open
+        windowClass: 'popup'
+        backdrop: 'static'
+        controller: StatusPopupCtrl
+        templateUrl: 'tpls/statuses/popup.html'
+        resolve:
+          status: status.clone
+          title: -> "Editing #{status.name}"
+          statuses: -> statuses
+      .result.then (newStatus) ->
+        if newStatus?
+          _.assign status, newStatus
+        else
+          _.remove statuses, status
 ]

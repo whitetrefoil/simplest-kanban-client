@@ -33,9 +33,10 @@
     </div>
   </form>
 </div>
-<div class="modal-footer">
+<div class="modal-footer"
+     ng-if="!isConfirmingDeleting">
   <button class="delete-button" type="button"
-          ng-if="!isNew">Delete</button>
+          ng-if="!isNew" ng-click="confirmDeleting()">Delete</button>
   <button class="cancel-button" type="button"
           ng-click="cancel()">Cancel</button>
   <button class="save-button" form="statusPopupForm"
@@ -43,9 +44,20 @@
   <button class="saving-button" type="button"
           ng-if="saveStatus === 'saving'" disabled>Saving&hellip;</button>
   <button class="retry-button" form="statusPopupForm"
-          ng-if="saveStatus === 'failed'" ng-disabled="statusForm.$invalid">Failed! Click to Retry</button>
+          ng-if="saveStatus === 'failed'"
+          ng-disabled="statusForm.$invalid">Failed! Click to Retry</button>
 </div>
-<div class="popup-delete-prompt modal-footer">
-  <button class="cancel-button" type="button">Don't do this</button>
-  <button class="delete-button" type="button">Confirm to delete</button>
+<div class="popup-delete-prompt modal-footer"
+     ng-if="isConfirmingDeleting">
+  <button class="cancel-button" type="button"
+          ng-click="cancelDeleting()">Don't do this</button>
+  <button type="button" class="delete-button"
+          ng-if="!deleteStatus"
+          ng-click="delete()">Confirm to delete</button>
+  <button type="button" class="saving-button" disabled
+          ng-if="deleteStatus === 'saving'"
+          ng-click="delete()">Deleting&hellip;</button>
+  <button type="button" class="delete-button"
+          ng-if="deleteStatus === 'failed'"
+          ng-click="delete()">Failed! Click to Retry</button>
 </div>

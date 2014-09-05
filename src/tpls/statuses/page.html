@@ -1,6 +1,7 @@
-<h2>Current Statuses</h2>
+<h2>Statuses Configuration</h2>
 <ul>
   <li ng-repeat="status in statuses">
-    {{status.name}}
+    <a href="javascript:"
+       ng-click="editStatus(status)">{{status.code}} - {{status.name}}</a>
   </li>
 </ul>
