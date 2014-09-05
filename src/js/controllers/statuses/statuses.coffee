@@ -3,11 +3,13 @@
 StatusPopupCtrl = [
   '$scope', '$modalInstance', 'title', 'status', 'statuses'
   ($scope, $modalInstance, title, status, statuses) ->
+    isNew = !status?
+
     $scope.isConfirmingDeleting = false
     $scope.cancelDeleting = -> $scope.isConfirmingDeleting = false
     $scope.confirmDeleting = -> $scope.isConfirmingDeleting = true
 
-    $scope.isNew = !status?
+    $scope.isNew = isNew
     $scope.title = title
 
     if $scope.isNew is true
@@ -18,9 +20,14 @@ StatusPopupCtrl = [
       $scope.model = status
 
     $scope.cancel = -> $modalInstance.dismiss 'cancel'
+
     $scope.save = ->
       $scope.saveStatus = 'saving'
-      statuses.post $scope.model
+      saving = if isNew
+        statuses.post $scope.model
+      else
+        status.put()
+      saving
       .then (result) ->
         $modalInstance.close(result)
       .catch ->
@@ -69,7 +76,7 @@ angular
           statuses: -> statuses
       .result.then (newStatus) ->
         if newStatus?
-          _.assign status, newStatus
+          _.extend status, newStatus
         else
           _.remove statuses, status
 ]
