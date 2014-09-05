@@ -28,7 +28,7 @@ SK.config [
     .state 'app.statuses',
       url: 'statuses'
       controller: 'StatusesCtrl'
-      templateUrl: 'tpls/statuses.html'
+      templateUrl: 'tpls/statuses/page.html'
     .state 'app.milestones',
       url: 'milestones'
       template: 'milestones - TBD'

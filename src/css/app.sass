@@ -141,23 +141,31 @@ $col-pre-status: $columns / $statuses
       display: none
 
 .popup
-  @extend .modal
-  @extend .fade
-  .modal-title
-    h1
-      margin: 0
-      font-size: 120%
-  .popup-footer
-    @extend .modal-footer
-    .delete-button
+  .modal-header
+    .modal-title
+      h1
+        margin: 0
+        font-size: 120%
+  .modal-body
+    form
+      > .form-group
+        > label
+          +make-xs-column(4)
+        > .form-input
+          +make-xs-column(6)
+  .modal-footer
+    button
       @extend .btn
+    .delete-button
       @extend .btn-danger
       float: left
     .save-button
-      @extend .btn
       @extend .btn-primary
+    .saving-button
+      @extend .btn-info
+    .retry-button
+      @extend .btn-danger
     .cancel-button
-      @extend .btn
       @extend .btn-default
   .popup-delete-prompt
     @extend .modal-footer
