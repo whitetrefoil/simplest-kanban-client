@@ -1,16 +1,12 @@
 'use strict'
 
 SK.config [
-  'RestangularProvider',
-  (RestangularProvider) ->
+  'RestangularProvider'
+  'pushMethod'
+  (RestangularProvider, pushMethod) ->
 
     RestangularProvider.extendModel 'assignees', (assignee) ->
-      assignee.push = ->
-        @save()
-        .then (value) =>
-          @_etag = value._etag
-          value
-
+      assignee.push = pushMethod
       assignee
 ]
 
