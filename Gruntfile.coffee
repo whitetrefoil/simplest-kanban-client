@@ -151,7 +151,7 @@ module.exports = (grunt) ->
           'dist/js/**/*.js'
         ]
     useminPrepare:
-      html: [ '.building/**/*.html' ]
+      html: [ '+(src|.building)/**/*.html' ]
     usemin:
       html: [ 'dist/**/*.html' ]
       css: [ 'dist/css/**/*.css' ]
