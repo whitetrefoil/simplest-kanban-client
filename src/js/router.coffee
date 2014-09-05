@@ -25,6 +25,10 @@ SK.config [
       templateUrl: 'tpls/assignees.html'
       resolve:
         assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
+    .state 'app.statuses',
+      url: 'statuses'
+      controller: 'StatusesCtrl'
+      templateUrl: 'tpls/statuses.html'
     .state 'app.milestones',
       url: 'milestones'
       template: 'milestones - TBD'

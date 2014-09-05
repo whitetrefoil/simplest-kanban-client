@@ -15,24 +15,50 @@ $col-pre-status: $columns / $statuses
   +clearfix
   > .container
     @extend .container-fluid
-    > button
-      margin-left: 10px
-    > button.add-button
-      @extend .btn
-      @extend .btn-primary
-      @extend .navbar-btn
-      @extend .navbar-right
-      > .button-icon
-        @extend .glyphicon
-        @extend .glyphicon-pencil
-    > button.refresh-button
-      @extend .btn
-      @extend .btn-info
-      @extend .navbar-btn
-      @extend .navbar-right
-      > .button-icon
-        @extend .glyphicon
-        @extend .glyphicon-refresh
+    position: relative
+    > .navbar-header
+      > h1
+        @extend .navbar-brand
+        margin:
+          top: 0
+          bottom: 0
+        > a
+          color: inherit
+          text-decoration: none
+    > .navbar-secondary
+      @extend .collapse
+      @extend .navbar-collapse
+      float: left
+      > ul
+        @extend .nav
+        @extend .navbar-nav
+    > .navbar-toolbar
+      @extend .navbar-header
+      float: right
+      position: absolute
+      right: 10px
+      top: 0
+      margin:
+        right: 0
+      > button
+        margin-left: 10px
+      > button.add-button
+        @extend .btn
+        @extend .btn-primary
+        @extend .navbar-btn
+        @extend .navbar-right
+        > .button-icon
+          @extend .glyphicon
+          @extend .glyphicon-pencil
+      > button.refresh-button
+        @extend .btn
+        @extend .btn-info
+        @extend .navbar-btn
+        @extend .navbar-right
+        > .button-icon
+          @extend .glyphicon
+          @extend .glyphicon-refresh
+
 
 .agile-board
   +make-row

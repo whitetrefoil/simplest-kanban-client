@@ -1,16 +1,24 @@
-<header id='main-navbar'>
-  <div class='container'>
+<header id="main-navbar">
+  <div class="container">
     <div class="navbar-header">
-      <div class="navbar-brand">{{ title }}</div>
+      <h1><a ui-sref="app.board">Kanban</a></h1>
     </div>
-    <button class='add-button' type='button'>
-      <span class='button-icon'></span>
-      New Task
-    </button>
-    <button class='refresh-button' type='button'>
-      <span class='button-icon'></span>
-      Refresh
-    </button>
+    <div class="navbar-secondary">
+      <ul>
+        <li><a ui-sref="app.assignees">Assignees</a></li>
+        <li><a ui-sref="app.labels">Labels</a></li>
+        <li><a ui-sref="app.milestones">Milestones</a></li>
+        <li><a ui-sref="app.statuses">Statuses</a></li>
+      </ul>
+    </div>
+    <div class="navbar-toolbar">
+      <button class="add-button" type="button">
+        <span class="button-icon"></span>
+      </button>
+      <button class="refresh-button" type="button">
+        <span class="button-icon"></span>
+      </button>
+    </div>
   </div>
 </header>
-<div class='container' ui-view></div>
+<div class="container" ui-view></div>
