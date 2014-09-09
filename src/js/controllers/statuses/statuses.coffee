@@ -52,17 +52,20 @@ angular
   ($scope, statuses, $modal) ->
     $scope.statuses = statuses
     $scope.$on 'createButtonClicked', ->
-      $modal.open
-        windowClass: 'popup'
-        backdrop: 'static'
-        controller: StatusPopupCtrl
-        templateUrl: 'tpls/statuses/popup.html'
-        resolve:
-          status: -> null
-          title: -> 'New Status'
-          statuses: -> statuses
-      .result.then (newStatus) ->
-        statuses.push newStatus
+      if statuses.length >= 4
+        $scope.$emit 'errorMsg', 'At maximum 4 statuses are allowed.'
+      else
+        $modal.open
+          windowClass: 'popup'
+          backdrop: 'static'
+          controller: StatusPopupCtrl
+          templateUrl: 'tpls/statuses/popup.html'
+          resolve:
+            status: -> null
+            title: -> 'New Status'
+            statuses: -> statuses
+        .result.then (newStatus) ->
+          statuses.push newStatus
 
     $scope.$on 'refreshButtonClicked', -> statuses.getList()
 
