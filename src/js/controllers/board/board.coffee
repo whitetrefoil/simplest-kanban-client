@@ -33,10 +33,9 @@ SK.controller 'BoardCtrl', [
           task.status = originalStatusCode
           refreshStatus()
           if reason.status is 412
-            # replace `console.log` with display error message
-            console.log 'Data in brower is out-of-date, please refresh before further operation!', reason
+            $scope.$emit 'errorMsg', 'Data in brower is out-of-date, please refresh before further operation!', reason
           else
-            console.log reason
+            $scope.$emit 'errorMsg',  reason
 
     refreshStatus()
 ]
