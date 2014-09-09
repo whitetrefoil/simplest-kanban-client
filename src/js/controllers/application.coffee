@@ -2,12 +2,14 @@
 
 SK.controller 'AppCtrl', [
   '$scope'
-  'AlertsService'
-  ($scope, AlertsService) ->
+  ($scope) ->
     $scope.create = ->
       $scope.$broadcast 'createButtonClicked'
     $scope.refresh = ->
       $scope.$broadcast 'refreshButtonClicked'
     $scope.alerts = []
-    AlertsService.setAlertsScope($scope.alerts)
+    $scope.$on 'errorMsg', (event, msg) ->
+      $scope.alerts.push
+        type: 'danger'
+        msg: msg
 ]

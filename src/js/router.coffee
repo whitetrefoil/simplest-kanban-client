@@ -11,30 +11,31 @@ SK.config [
     .state 'app',
       url: '/'
       abstract: true
-      controller: 'AppCtrl'
-      templateUrl: 'tpls/application.html'
-    .state 'app.board',
-      url: ''
-      controller: 'BoardCtrl'
-      templateUrl: 'tpls/board/page.html'
       resolve:
         tasks: ['TasksService', (TasksService) -> TasksService.getList()]
         assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
         statuses: ['StatusesService', (StatusesService) -> StatusesService.getList()]
         labels: ['LabelsService', (LabelsService) -> LabelsService.getList()]
         milestones: ['MilestonesService', (MilestonesService) -> MilestonesService.getList()]
+      views:
+        '':
+          controller: 'AppCtrl'
+          templateUrl: 'tpls/application.html'
+        'alerts@app':
+          controller: 'AlertsCtrl'
+          templateUrl: 'tpls/global/alerts.html'
+    .state 'app.board',
+      url: ''
+      controller: 'BoardCtrl'
+      templateUrl: 'tpls/board/page.html'
     .state 'app.assignees',
       url: 'assignees'
       controller: 'AssigneesCtrl'
       templateUrl: 'tpls/assignees.html'
-      resolve:
-        assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
     .state 'app.statuses',
       url: 'statuses'
       controller: 'StatusesCtrl'
       templateUrl: 'tpls/statuses/page.html'
-      resolve:
-        statuses: ['StatusesService', (StatusesService) -> StatusesService.getList()]
     .state 'app.milestones',
       url: 'milestones'
       template: 'milestones - TBD'
