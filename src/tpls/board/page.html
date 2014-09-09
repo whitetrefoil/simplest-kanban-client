@@ -1,5 +1,5 @@
 <section id="board" class="agile-board">
-  <section class="agile-board-col" ng-repeat="status in statuses | orderBy:'order'">
+  <section class="agile-board-col" ng-repeat="status in statuses">
     <h3>{{ status.name }}</h3>
     <ul>
       <li ng-repeat="task in status.tasks"

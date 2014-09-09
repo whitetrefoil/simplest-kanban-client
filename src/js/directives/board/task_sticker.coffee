@@ -11,6 +11,7 @@ angular.module 'simplestKanban'
     controller: [
       '$scope'
       ($scope) ->
-        console.log $scope
+        $scope.moveLeft = -> $scope.$emit 'taskMoveButtonClicked', $scope.task, -1
+        $scope.moveRight = -> $scope.$emit 'taskMoveButtonClicked', $scope.task, 1
     ]
 ]
