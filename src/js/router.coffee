@@ -10,9 +10,9 @@ SK.config [
     $stateProvider
     .state 'app',
       url: '/'
+      abstract: true
       controller: 'AppCtrl'
       templateUrl: 'tpls/application.html'
-      abstract: true
     .state 'app.board',
       url: ''
       controller: 'BoardCtrl'

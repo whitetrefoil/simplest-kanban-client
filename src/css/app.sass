@@ -5,16 +5,20 @@ $columns: 12
 $statuses: 4
 $col-pre-status: $columns / $statuses
 
-#page
-  > .container
-    @extend .container-fluid
+#page-notifications
+  @extend .container
+  > div
+    +make-row()
+    > .alert
+      +make-xs-column(10)
+      +make-xs-column-offset(1)
+      padding-right: 35px
 
 #main-navbar
   @extend .navbar
   @extend .navbar-default
   +clearfix
   > .container
-    @extend .container-fluid
     position: relative
     > .navbar-header
       > h1

@@ -22,3 +22,8 @@
   </div>
 </header>
 <div class="container" ui-view></div>
+<div id="page-notifications">
+  <div ng-repeat="alert in alerts">
+    <alert type="{{alert.type}}" close="alert.close()">{{alert.msg}}</alert>
+  </div>
+</div>

@@ -2,10 +2,12 @@
 
 SK.controller 'AppCtrl', [
   '$scope'
-  '$state'
-  ($scope) ->
+  'AlertsService'
+  ($scope, AlertsService) ->
     $scope.create = ->
       $scope.$broadcast 'createButtonClicked'
     $scope.refresh = ->
       $scope.$broadcast 'refreshButtonClicked'
+    $scope.alerts = []
+    AlertsService.setAlertsScope($scope.alerts)
 ]
