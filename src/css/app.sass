@@ -70,8 +70,16 @@ $col-pre-status: $columns / $statuses
       margin: 0
       padding: 0
 
+    &:first-child
+      .task-sticker
+        > .task-sticker-move-left
+          display: none
+    &:last-child
+      .task-sticker
+        > .task-sticker-move-right
+          display: none
+
   .task-sticker
-    @extend .panel
     position: relative
     > .task-sticker-title
       @extend .panel-heading
@@ -122,23 +130,6 @@ $col-pre-status: $columns / $statuses
     > .task-sticker-move-right
       @extend .glyphicon-chevron-right
       right: 0
-
-#op-col
-  .task-sticker
-    @extend .panel-info
-    > .task-sticker-move-left
-      display: none
-#ip-col
-  .task-sticker
-    @extend .panel-success
-#sh-col
-  .task-sticker
-    @extend .panel-warning
-#dev-col
-  .task-sticker
-    @extend .panel-default
-    > .task-sticker-move-right
-      display: none
 
 .popup
   .modal-header

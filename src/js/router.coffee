@@ -16,9 +16,13 @@ SK.config [
     .state 'app.board',
       url: ''
       controller: 'BoardCtrl'
-      templateUrl: 'tpls/board.html'
+      templateUrl: 'tpls/board/board.html'
       resolve:
         tasks: ['TasksService', (TasksService) -> TasksService.getList()]
+        assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]
+        statuses: ['StatusesService', (StatusesService) -> StatusesService.getList()]
+        labels: ['LabelsService', (LabelsService) -> LabelsService.getList()]
+        milestones: ['MilestonesService', (MilestonesService) -> MilestonesService.getList()]
     .state 'app.assignees',
       url: 'assignees'
       controller: 'AssigneesCtrl'

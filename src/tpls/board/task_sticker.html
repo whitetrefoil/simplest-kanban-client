@@ -1,0 +1,13 @@
+<div class="task-sticker panel panel-{{class}}">
+  <a class="task-sticker-move-left glyphicon glyphicon-chevron-left"></a>
+  <a class="task-sticker-move-right glyphicon glyphicon-chevron-right"></a>
+  <div class="task-sticker-title">
+    <h5 title="{{task.name}}">
+      <a>{{task.name}}</a>
+    </h5>
+  </div>
+  <div class="task-sticker-content" title="{{task.assignee || 'unassigned'}}">
+    <span class="task-sticker-assignee-icon"></span>
+    {{task.assignee || 'unassigned'}}
+  </div>
+</div>

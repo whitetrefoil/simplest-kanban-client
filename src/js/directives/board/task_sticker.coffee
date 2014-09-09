@@ -1,0 +1,16 @@
+'use strict'
+
+angular.module 'simplestKanban'
+.directive 'taskSticker', [
+  ->
+    restrict: 'A'
+    templateUrl: 'tpls/board/task_sticker.html'
+    scope:
+      task: '='
+      class: '=panelClass'
+    controller: [
+      '$scope'
+      ($scope) ->
+        console.log $scope
+    ]
+]
