@@ -16,7 +16,7 @@ SK.config [
     .state 'app.board',
       url: ''
       controller: 'BoardCtrl'
-      templateUrl: 'tpls/board/board.html'
+      templateUrl: 'tpls/board/page.html'
       resolve:
         tasks: ['TasksService', (TasksService) -> TasksService.getList()]
         assignees: ['AssigneesService', (AssigneesService) -> AssigneesService.getList()]

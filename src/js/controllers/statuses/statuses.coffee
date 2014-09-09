@@ -51,7 +51,7 @@ angular
   '$modal'
   ($scope, statuses, $modal) ->
     $scope.statuses = statuses
-    $scope.toolbar.createNew = ->
+    $scope.$on 'createButtonClicked', ->
       $modal.open
         windowClass: 'popup'
         backdrop: 'static'
@@ -63,6 +63,8 @@ angular
           statuses: -> statuses
       .result.then (newStatus) ->
         statuses.push newStatus
+
+    $scope.$on 'refreshButtonClicked', -> statuses.getList()
 
     $scope.editStatus = (status) ->
       $modal.open

@@ -3,8 +3,9 @@
 SK.controller 'AppCtrl', [
   '$scope'
   '$state'
-  ($scope, $state) ->
-    $scope.toolbar =
-      createNew: ->
-        console.log $state
+  ($scope) ->
+    $scope.create = ->
+      $scope.$broadcast 'createButtonClicked'
+    $scope.refresh = ->
+      $scope.$broadcast 'refreshButtonClicked'
 ]
