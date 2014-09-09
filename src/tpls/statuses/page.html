@@ -1,7 +1,7 @@
 <h2>Statuses Configuration</h2>
 <ul>
-  <li ng-repeat="status in statuses">
+  <li ng-repeat="status in statuses | orderBy:'order'">
     <a href="javascript:"
-       ng-click="editStatus(status)">{{status.code}} - {{status.name}}</a>
+       ng-click="editStatus(status)">[{{ status.order }}] {{ status.code }} - {{ status.name }}</a>
   </li>
 </ul>
