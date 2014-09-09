@@ -2,12 +2,13 @@
 
 SK.controller 'BoardCtrl', [
   '$scope'
+  '$q'
   'tasks'
   'statuses'
   'assignees'
   'milestones'
   'labels'
-  ($scope, tasks, statuses, assignees, milestones, labels) ->
+  ($scope, $q, tasks, statuses, assignees, milestones, labels) ->
 
     refreshStatus = ->
       statuses.sort (a, b) -> a.order - b.order
@@ -19,7 +20,10 @@ SK.controller 'BoardCtrl', [
         $scope.statuses.push output
 
     $scope.$on 'refreshButtonClicked', ->
-      _.invoke [tasks, statuses, assignees, milestones, labels], 'getList'
+      promises = _.invoke [tasks, statuses, assignees, milestones, labels], 'getList'
+      $q.all(promises).then (args...)->
+        [tasks, statuses, assignees, milestones, labels] = args[0]
+        refreshStatus()
 
     $scope.$on 'taskMoveButtonClicked', (event, task, direction) ->
       # the `statuses` must already be sorted by order
