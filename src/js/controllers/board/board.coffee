@@ -42,7 +42,6 @@ SK.controller 'BoardCtrl', [
       .then (newStatus) ->
         if newStatus?
           _.extend task, newStatus
-          console.log 'then: ', tasks[0]._etag # TODO
         else
           _.remove tasks, task
         refreshStatus()
