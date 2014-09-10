@@ -18,9 +18,10 @@
     <div class="form-group">
       <label class="control-label" for="taskPopupAssignee">Assignee</label>
       <div class="form-input">
-        <input id="taskPopupAssignee" type="text"
+        <input id="taskPopupAssignee" type="text" autocomplete="off"
                class="form-control" placeholder="Leave empty for unassigned"
-               ng-model="task.assignee"/>
+               ng-model="task.assignee"
+               typeahead="assignee.name for assignee in assignees | filter:{name:$viewValue} | limitTo:8"/>
       </div>
     </div>
     <div class="form-group">
