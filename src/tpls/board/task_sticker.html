@@ -5,7 +5,7 @@
       ng-click="moveRight()"></a>
   <div class="task-sticker-title">
     <h5 title="{{task.name}}">
-      <a>{{task.name}}</a>
+      <a ng-click="editTask(task)">{{task.name}}</a>
     </h5>
   </div>
   <div class="task-sticker-content" title="{{task.assignee || 'unassigned'}}">

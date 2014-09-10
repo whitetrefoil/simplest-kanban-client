@@ -33,8 +33,20 @@ SK.controller 'BoardCtrl', [
 
     $scope.$on 'createButtonClicked', ->
       openTaskPopup()
-      .then (newTask) ->
-        console.log newTask
+      .then (newTask)->
+        tasks.push newTask
+        refreshStatus()
+
+
+    $scope.editTask = (task) ->
+      openTaskPopup(task)
+      .then (newStatus) ->
+        if newStatus?
+          _.extend task, newStatus
+          console.log 'then: ', tasks[0]._etag # TODO
+        else
+          _.remove tasks, task
+        refreshStatus()
 
 
     $scope.$on 'refreshButtonClicked', ->
@@ -55,7 +67,7 @@ SK.controller 'BoardCtrl', [
           task.status = originalStatusCode
           refreshStatus()
           if reason.status is 412
-            $scope.$emit 'errorMsg', 'Data in brower is out-of-date, please refresh before further operation!', reason
+            $scope.$emit 'errorMsg', 'Data in browser is out-of-date, please refresh before further operation!', reason
           else
             $scope.$emit 'errorMsg',  reason
 

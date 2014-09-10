@@ -15,6 +15,7 @@ angular.module 'simplestKanban'
 
     $scope.task = if task? then task.plain() else {
       status: statuses[0].code
+      labels: []
     }
 
     $scope.statuses = statuses.plain()
@@ -22,27 +23,27 @@ angular.module 'simplestKanban'
     $scope.cancel = -> $modalInstance.dismiss 'cancel'
 
     $scope.save = ->
-      console.log $scope.task.status
+      $scope.saveStatus = 'saving'
+      saving = if isNew
+        if _.isEmpty $scope.task.assignee then delete $scope.task.assignee
+        tasks.post $scope.task
+      else
+        originalTask = _.pick task, _.keys($scope.task)
+        _.extend task, $scope.task
+        if _.isEmpty task.assignee then delete task.assignee
+        task.push()
+      saving
+      .then (result) ->
+        $modalInstance.close(result)
+      .catch ->
+        _.extend task, originalTask
+        $scope.saveStatus = 'failed'
 
-    ###
-        $scope.save = ->
-          $scope.saveStatus = 'saving'
-          saving = if isNew
-            statuses.post $scope.model
-          else
-            status.put()
-          saving
-          .then (result) ->
-            $modalInstance.close(result)
-          .catch ->
-            $scope.saveStatus = 'failed'
-
-        $scope.delete = ->
-          $scope.deleteStatus = 'saving'
-          status.remove()
-          .then ->
-            $modalInstance.close()
-          .catch ->
-            $scope.deleteStatus = 'failed'
-    ###
+    $scope.delete = ->
+      $scope.deleteStatus = 'saving'
+      task.remove()
+      .then ->
+        $modalInstance.close()
+      .catch ->
+        $scope.deleteStatus = 'failed'
 ]

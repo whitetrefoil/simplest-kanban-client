@@ -26,7 +26,7 @@ StatusPopupCtrl = [
       saving = if isNew
         statuses.post $scope.model
       else
-        status.put()
+        status.push()
       saving
       .then (result) ->
         $modalInstance.close(result)

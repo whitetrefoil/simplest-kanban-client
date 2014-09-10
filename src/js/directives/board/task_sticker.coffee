@@ -8,6 +8,7 @@ angular.module 'simplestKanban'
     scope:
       task: '='
       class: '=panelClass'
+      editTask: '=editFn'
     controller: [
       '$scope'
       ($scope) ->

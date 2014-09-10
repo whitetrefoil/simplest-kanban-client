@@ -3,7 +3,8 @@
     <h3>{{ status.name }}</h3>
     <ul>
       <li ng-repeat="task in status.tasks"
-          task-sticker task="task" panel-class="status.cssClass"></li>
+          task-sticker task="task" panel-class="status.cssClass"
+          edit-fn="editTask"></li>
     </ul>
   </section>
 </section>
