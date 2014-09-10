@@ -8,10 +8,16 @@ SK.config [
     RestangularProvider.extendModel 'assignees', (assignee) ->
       assignee.push = pushMethod
       assignee
+
+    RestangularProvider.addElementTransformer 'assignees', true, (assignees) ->
+      assignees.create = (args...) ->
+        assignees.post(args...)
+        .then (result) -> assignees.push result
+      assignees
 ]
 
 SK.factory 'AssigneesService', [
   'Restangular'
   (Restangular) ->
-    Restangular.all 'assignees'
+    Restangular.service 'assignees'
 ]

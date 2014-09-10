@@ -8,10 +8,16 @@ SK.config [
     RestangularProvider.extendModel 'labels', (label) ->
       label.push = pushMethod
       label
+
+    RestangularProvider.addElementTransformer 'labels', true, (labels) ->
+      labels.create = (args...) ->
+        labels.post(args...)
+        .then (result) -> labels.push result
+      labels
 ]
 
 SK.factory 'LabelsService', [
   'Restangular'
   (Restangular) ->
-    Restangular.all 'labels'
+    Restangular.service 'labels'
 ]

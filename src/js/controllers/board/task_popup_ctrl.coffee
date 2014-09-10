@@ -30,12 +30,11 @@ angular.module 'simplestKanban'
       if _.isEmpty $scope.task.assignee
         delete $scope.task.assignee
       else if _.find(assignees, ({name: $scope.task.assignee})) is undefined
-        savingAssignee = assignees.post({name: $scope.task.assignee})
-        .then (result) -> assignees.push result
+        savingAssignee = assignees.create({name: $scope.task.assignee})
       $q.when(savingAssignee)
       .then ->
         if isNew
-          tasks.post $scope.task
+          tasks.create $scope.task
         else
           originalTask = _.pick task, _.keys($scope.task)
           _.extend task, $scope.task

@@ -33,8 +33,7 @@ SK.controller 'BoardCtrl', [
 
     $scope.$on 'createButtonClicked', ->
       openTaskPopup()
-      .then (newTask)->
-        tasks.push newTask
+      .then ->
         refreshStatus()
 
 
