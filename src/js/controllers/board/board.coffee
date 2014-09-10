@@ -1,14 +1,25 @@
 'use strict'
 
 SK.controller 'BoardCtrl', [
-  '$scope'
-  '$q'
-  'tasks'
-  'statuses'
-  'assignees'
-  'milestones'
-  'labels'
-  ($scope, $q, tasks, statuses, assignees, milestones, labels) ->
+  '$scope', '$rootScope', '$q', '$modal'
+  'tasks', 'statuses', 'assignees', 'milestones', 'labels'
+  ($scope, $rootScope, $q, $modal,
+   tasks, statuses, assignees, milestones, labels) ->
+
+    openTaskPopup = (task = null) ->
+      $modal.open
+        windowClass: 'popup'
+        backdrop: 'static'
+        controller: 'TaskPopupCtrl'
+        templateUrl: 'tpls/board/task_popup.html'
+        resolve:
+          task: -> task
+          tasks: -> tasks
+          statuses: -> statuses
+          labels: -> labels
+          assignees: -> assignees
+          milestones: -> milestones
+      .result
 
     refreshStatus = ->
       statuses.sort (a, b) -> a.order - b.order
@@ -18,6 +29,13 @@ SK.controller 'BoardCtrl', [
         output = _.pick status, ['code', 'name', 'cssClass', 'order']
         output.tasks = _.filter tasks, {status: status.code}
         $scope.statuses.push output
+
+
+    $scope.$on 'createButtonClicked', ->
+      openTaskPopup()
+      .then (newTask) ->
+        console.log newTask
+
 
     $scope.$on 'refreshButtonClicked', ->
       promises = _.invoke [tasks, statuses, assignees, milestones, labels], 'getList'
