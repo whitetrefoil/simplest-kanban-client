@@ -3,7 +3,9 @@
 angular
 .module 'simplestKanban'
 .constant 'pushMethod', ->
+  # orz...
+  realThis = @.save.__bindData__[4]
   @save()
-  .then (value) =>
-    @_etag = value._etag
+  .then (value) ->
+    realThis._etag = value._etag
     value
