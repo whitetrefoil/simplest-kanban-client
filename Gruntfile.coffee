@@ -84,7 +84,7 @@ module.exports = (grunt) ->
       bootstrap:
         files: [
           expand: true
-          cwd: 'src/lib//bootstrap-sass-official/assets/fonts'
+          cwd: 'src/lib/bootstrap-sass-official/assets/fonts'
           src: [ 'bootstrap/**/*' ]
           dest: 'src/fonts/'
         ]
