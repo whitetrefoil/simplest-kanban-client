@@ -9,7 +9,8 @@ angular.module 'simplestKanban'
         RestangularConfigurer.extendModel name, (elem) ->
           elem.push = ->
             elem.save()
-            .then (result) -> _.extend elem, result
+            .then (result) ->
+              elem._etag = result._etag if result._etag?
           elem
 
         RestangularConfigurer.addElementTransformer name, true, (collection) ->
