@@ -10,20 +10,16 @@ module.exports = (grunt) ->
         options:
           targetDir: './src/lib'
           cleanTargetDir: true
-          layout: 'byComponent'
-      copyOnly:
-        options:
-          targetDir: './src/lib'
-          cleanTargetDir: true
-          layout: 'byComponent'
-          install: false
+          install: true
+          copy: false
     concurrent:
       clean: [ 'clean:dist', 'clean:server' ]
       dependencies: [ 'bower:install' ]
-      preServer: [ 'copy:bootstrap', 'jade:server', 'compass:server', 'coffee:server', 'emblem:server' ]
-      # preCompile: compile the files to optimize
+      preServer: [ 'compass:server', 'coffee:server', 'copy:server',
+                   'handlebars:server' ]
+    # preCompile: compile the files to optimize
       preCompile: [ 'copy:building', 'copy:dist',
-                    'coffee:building', 'compass:dist', 'jade:building', 'emblem:building' ]
+                    'coffee:building', 'compass:dist', 'handlebars:building' ]
       afterBuild: [ 'clean:building', 'clean:cache' ]
     clean:
       dist: [ 'dist' ]
@@ -70,26 +66,57 @@ module.exports = (grunt) ->
           #       refer to: [https://github.com/gruntjs/grunt-contrib-compass/issues/176]()
           #bundleExec: true
     connect:
+      options:
+        port: 8000
+        base: ['.server', 'src']
+        open: 'http://localhost:8000'
+        middleware: (connect, options) ->
+          options.base = [options.base] unless Array.isArray(options.base)
+          middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest]
+          options.base.forEach (base) ->
+            middlewares.push(connect.static(base))
+          directory = options.directory or options.base[options.base.length - 1]
+          middlewares.push(connect.directory(directory))
+          middlewares.push (req, res, next) ->
+            console.log req.url
+            next()
+          middlewares
       server:
+        proxies: [
+          context: '/api'
+          host: 'localhost'
+          port: 9999
+        ]
         options:
-          base: [ '.server', 'src' ]
           livereload: true
-          useAvailablePort: true
     copy:
-      bootstrap:
+      server:
         files: [
           expand: true
-          cwd: 'bower_components/bootstrap-sass-official/assets/fonts'
+          cwd: 'src'
+          src: [ '**/*', '!lib/**/*',
+                 '!**/*.{coffee,litcoffee,sass,scss,js,handlebars}' ]
+          filter: 'isFile'
+          dest: '.server/'
+        ,
+          expand: true
+          cwd: 'src/lib/bootstrap-sass-official/assets/fonts'
           src: [ 'bootstrap/**/*' ]
-          dest: 'src/fonts/'
+          dest: '.server/fonts/'
         ]
       dist:
         files: [
           expand: true
           cwd: 'src'
-          src: [ '**/*', '!lib/**/*', '!**/*.{coffee,litcoffee,sass,scss,jade,slim,js}' ]
+          src: [ '**/*', '!lib/**/*',
+                 '!**/*.{coffee,litcoffee,sass,scss,js,handlebars}' ]
           filter: 'isFile'
           dest: 'dist/'
+        ,
+          expand: true
+          cwd: 'src/lib/bootstrap-sass-official/assets/fonts'
+          src: [ 'bootstrap/**/*' ]
+          dest: 'dist/fonts/'
         ]
       building:
         files: [
@@ -98,6 +125,11 @@ module.exports = (grunt) ->
           src: [ '**/*.js' ]
           filter: 'isFile'
           dest: '.building'
+        ,
+          expand: true
+          cwd: 'src/lib/bootstrap-sass-official/assets/fonts'
+          src: [ 'bootstrap/**/*' ]
+          dest: '.building/fonts/'
         ]
       usemin:
         files: [
@@ -123,30 +155,6 @@ module.exports = (grunt) ->
           src: [ '**/*.html' ]
           dest: 'dist'
         ]
-    jade:
-      building:
-        options:
-          pretty: true
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jade' ]
-          dest: '.building'
-          ext: '.html'
-          extDot: 'last'
-        ]
-      server:
-        options:
-          pretty: true
-          compileDebug: true
-        files: [
-          expand: true
-          cwd: 'src'
-          src: [ '**/*.jade' ]
-          dest: '.server/'
-          ext: '.html'
-          extDot: 'last'
-        ]
     watch:
       options:
         spawn: false
@@ -155,6 +163,8 @@ module.exports = (grunt) ->
       bower:
         files: 'bower.json'
         tasks: 'concurrent:dependencies'
+      html:
+        files: 'src/**/*.html'
       jade:
         files: 'src/**/*.jade'
         tasks: 'jade:server'
@@ -164,21 +174,19 @@ module.exports = (grunt) ->
       coffee:
         files: 'src/**/*.+(coffee|litcoffee)'
         tasks: 'coffee:server'
-      emblem:
-        files: 'src/tpls/**/*.emblem'
-        tasks: 'emblem:server'
-    emblem:
+      handlebars:
+        files: 'src/**/*.handlebars'
+        tasks: 'handlebars:server'
+    handlebars:
       options:
-        root: 'src/tpls/'
-        dependencies:
-          handlebars: 'bower_components/handlebars/handlebars.min.js'
-          emblem: 'bower_components/emblem/dist/emblem.min.js'
+        namespace: 'SK.Templates'
+        processName: (path) -> path.replace /^src\/js\/templates\/(.*)\.handlebars$/, '$1'
       server:
         files:
-          '.server/tpls/tpls.js': 'src/tpls/**/*.emblem'
+          '.server/js/templates.js': 'src/js/templates/**/*.handlebars'
       building:
         files:
-          '.building/tpls/tpls.js': 'src/tpls/**/*.emblem'
+          '.building/js/templates.js': 'src/js/templates/**/*.handlebars'
     filerev:
       dist:
         src: [
@@ -187,7 +195,7 @@ module.exports = (grunt) ->
           'dist/js/**/*.js'
         ]
     useminPrepare:
-      html: [ '.building/**/*.html' ]
+      html: [ '+(src|.building)/**/*.html' ]
     usemin:
       html: [ 'dist/**/*.html' ]
       css: [ 'dist/css/**/*.css' ]
@@ -196,19 +204,19 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'compile', 'Compile & optimize the codes',
-      [ 'concurrent:preCompile', 'optimize' ]
+                     [ 'concurrent:preCompile', 'optimize' ]
 
   grunt.registerTask 'optimize', 'Optimize JS files',
-      [ 'useminPrepare', 'copy:usemin', 'concat:generated', 'uglify:generated', 'filerev', 'usemin', 'htmlmin' ]
+                     [ 'useminPrepare', 'copy:usemin', 'concat:generated',
+                       'uglify:generated', 'filerev', 'usemin', 'htmlmin' ]
 
   grunt.registerTask 'build', 'Build the code for production',
-      [ 'concurrent:clean', 'concurrent:dependencies', 'copy:bootstrap', 'compile', 'concurrent:afterBuild' ]
-
-  grunt.registerTask 'quickBuild', 'Quickly build the code w/o cleaning or bower tasks',
-      [ 'compile', 'concurrent:afterBuild' ]
+                     [ 'concurrent:clean', 'concurrent:dependencies', 'compile',
+                       'concurrent:afterBuild' ]
 
   grunt.registerTask 'server', 'Start a preview server',
-      [ 'concurrent:clean', 'bower:copyOnly', 'concurrent:preServer', 'connect:server', 'watch' ]
+                     [ 'concurrent:clean', 'concurrent:preServer',
+                       'connect:server', 'watch' ]
 
   grunt.registerTask 'default', 'UT (when has) & build',
-      [ 'build' ]
+                     [ 'build' ]

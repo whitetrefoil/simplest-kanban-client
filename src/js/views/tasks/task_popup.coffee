@@ -1,4 +1,4 @@
-template = Handlebars.templates['tasks/task_popup']
+template = SK.Templates['tasks/task_popup']
 
 
 class SK.TaskPopupView extends Backbone.View

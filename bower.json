@@ -6,22 +6,6 @@
     "backbone":                "^1.1",
     "lodash":                  "^2.4.1",
     "bootstrap-sass-official": "^3.2.0",
-    "emblem":                  "~0.3.18",
-    "handlebars":              "~2.0.0"
-  },
-  "exportsOverride": {
-    "lodash":                  {
-      "": [ "dist/lodash.js", "dist/lodash.underscore.js" ]
-    },
-    "handlebars":              {
-      "": "handlebars.runtime.js"
-    },
-    "emblem":                  {},
-    "underscore":              {},
-    "bootstrap-sass-official": {
-      "css":   "assets/stylesheets",
-      "js":    "assets/javascripts",
-      "fonts": "assets/fonts"
-    }
+    "handlebars":              "~1.3.0"
   }
 }

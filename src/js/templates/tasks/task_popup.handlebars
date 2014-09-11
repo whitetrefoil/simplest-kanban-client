@@ -1,0 +1,37 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">
+        <h1></h1>
+      </div>
+    </div>
+    <div class="modal-body">
+      <form action="#" class="form-horizontal" id="taskPopupForm" name="task">
+        <div class="form-group">
+          <label class="control-label col-xs-4" for="taskPopupName">Name</label>
+          <div class="col-xs-6">
+            <input class="form-control" id="taskPopupName" name="name" placeholder="Enter Task Name" type="text" value="{{task.name}}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-xs-4" for="taskPopupAssignee">Assignee</label>
+          <div class="col-xs-6">
+            <input class="form-control" id="taskPopupAssignee" name="assignee" placeholder="Enter Task Assignee" type="text" value="{{task.assignee}}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-xs-4" for="taskPopupStatus">Status</label>
+          <div class="col-xs-4">
+            <select class="form-control" id="taskPopupStatus" name="status" value="{{task.status}}"></select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="popup-footer">
+      <button class="delete-button" type="button">Delete</button><button class="cancel-button" type="button">Cancel</button><button class="save-button" form="taskPopupForm">Save</button>
+    </div>
+    <div class="popup-delete-prompt">
+      <button class="cancel-button" type="button">Don't do this</button><button class="delete-button" type="button">Confirm to delete</button>
+    </div>
+  </div>
+</div>

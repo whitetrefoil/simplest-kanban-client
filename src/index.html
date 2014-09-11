@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Simplest Kanban</title>
+  </head>
+  <body>
+    <div id="page">
+      <p>Now Loading&hellip;</p>
+    </div>
+    <!-- build:js js/libs.min.js-->
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/lodash/dist/lodash.underscore.js"></script>
+    <script src="lib/backbone/backbone.js"></script>
+    <script src="lib/lodash/dist/lodash.js"></script>
+    <!-- TODO: Need to upgrade the `grunt-contrib-handlebars` to support Handlebars v2 -->
+    <script src="lib/handlebars/handlebars.runtime.js"></script>
+    <script src="lib/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js js/tpls.min.js -->
+    <script src="js/templates.js"></script>
+    <!-- endbuild- ->
+
+    <!-- build:js js/index.min.js-->
+    <script src="js/application.js"></script>
+    <script src="js/config/config.js"></script>
+    <script src="js/models/base.js"></script>
+    <script src="js/models/task.js"></script>
+    <script src="js/collections/base.js"></script>
+    <script src="js/collections/tasks.js"></script>
+    <script src="js/views/tasks/task_popup.js"></script>
+    <script src="js/views/tasks/task_sticker.js"></script>
+    <script src="js/views/index.js"></script>
+    <script src="js/routers/base.js"></script>
+    <script src="js/routers/index.js"></script>
+    <script src="js/index.js"></script>
+    <!-- endbuild-->
+  </body>
+</html>

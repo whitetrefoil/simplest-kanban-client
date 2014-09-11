@@ -1,3 +1,3 @@
-window.SK = window.SimplestKanban = {}
+window.SK ||= {}
 
 SK.Data = {}

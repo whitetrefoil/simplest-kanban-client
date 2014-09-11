@@ -1,4 +1,4 @@
-template = Handlebars.templates.index
+template = SK.Templates.index
 
 class SK.IndexPageView extends Backbone.View
   el: '#page'

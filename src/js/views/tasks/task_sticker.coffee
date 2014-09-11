@@ -1,4 +1,4 @@
-template = Handlebars.templates['tasks/task_sticker']
+template = SK.Templates['tasks/task_sticker']
 
 
 class SK.TaskStickerView extends Backbone.View
